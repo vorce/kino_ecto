@@ -1,4 +1,4 @@
-<!-- livebook:{"persist_outputs":true} -->
+<!-- livebook:{"persist_outputs":false} -->
 
 # Lively Demo!
 
@@ -89,12 +89,8 @@ defmodule Person do
     belongs_to(:organization, Organization)
   end
 end
-
-Organization
 ```
 
-<!-- livebook:{"output":true} -->
-
-```
-Organization
+```elixir
+%Lively{schema: %Person{}}
 ```

@@ -1,4 +1,8 @@
 defmodule Lively.Introspect do
+  def call(%atom{} = struct) when is_struct(struct) do
+    call(atom)
+  end
+
   def call(struct), do: introspect_fields(struct, assocs(struct))
 
   defp introspect_fields(struct, assocs) do

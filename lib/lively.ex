@@ -1,4 +1,29 @@
 defmodule Lively do
+  defstruct [:schema]
+
+  defimpl Kino.Render, for: Lively do
+    defp is_ecto_schema?(%{__meta__: %Ecto.Schema.Metadata{}}), do: true
+    defp is_ecto_schema?(_), do: false
+
+    def to_livebook(struct) do
+      if is_ecto_schema?(struct.schema) do
+        er =
+          struct.schema
+          |> Lively.Visualize.call()
+
+        tabs =
+          Kino.Layout.tabs(
+            Raw: Kino.Inspect.new(struct.schema),
+            "Entity Relationship Diagram": er
+          )
+
+        Kino.Render.to_livebook(tabs)
+      else
+        Kino.Render.to_livebook(struct.schema)
+      end
+    end
+  end
+
   defimpl Kino.Render, for: Atom do
     def to_livebook(atom) do
       case Code.ensure_loaded(atom) do
