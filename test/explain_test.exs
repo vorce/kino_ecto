@@ -157,33 +157,56 @@ defmodule Lively.ExplainTest do
     plan = List.first(@explain_example)["Plan"]
 
     assert Explain.build_tree(plan) == %Node{
-             type: "Result",
-             timing: nil,
-             rows: nil,
-             cost: nil,
-             children: [
-               %Node{
-                 type: "Append",
-                 timing: nil,
-                 rows: nil,
-                 cost: nil,
-                 children: [
-                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
-                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []}
-                 ]
-               }
-             ]
-           }
+      children: [
+        %Node{
+          children: [
+            %Node{
+              children: [],
+              meta: [{:timing, 0.007}, {:rows, 0}, {:cost, 1.08}],
+              type: "Seq Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.085}, {:rows, 4}, {:cost, 5.16}],
+              type: "Seq Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.103}, {:rows, 0}, {:cost, 7.27}],
+              type: "Seq Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.002}, {:rows, 0}, {:cost, 8.27}],
+              type: "Index Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.003}, {:rows, 0}, {:cost, 8.27}],
+              type: "Index Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.001}, {:rows, 0}, {:cost, 11.8}],
+              type: "Seq Scan"
+            },
+            %Node{
+              children: [],
+              meta: [{:timing, 0.009}, {:rows, 0}, {:cost, 8.27}],
+              type: "Index Scan"
+            }
+          ],
+          meta: [{:timing, 0.218}, {:rows, 4}, {:cost, 50.11}],
+          type: "Append"
+        }
+      ],
+      meta: [{:timing, 0.231}, {:rows, 4}, {:cost, 50.13}],
+      type: "Result"
+    }
   end
 
-  test "render includes execution time" do
+  test "render mermaid graph" do
     explain = Explain.new(@explain_example)
-    {:markdown, content} = Kino.Render.to_livebook(explain)
-    assert content =~ "Execution time: 1.238ms"
+    assert {:js, %{export: %{info_string: "mermaid"}}} = Kino.Render.to_livebook(explain)
   end
 end
