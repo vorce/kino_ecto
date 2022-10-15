@@ -1,0 +1,61 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Lively Demo
+
+```elixir
+Mix.install([
+  {:ecto, "~> 3.8"},
+  {:lively, git: "https://github.com/spawnfest/lively"}
+])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Could not compile :lively, no "mix.exs", "rebar.config" or "Makefile" (pass :compile as an option to customize compilation, set it to "false" to do nothing)
+Unchecked dependencies for environment dev:
+* lively (/Users/filipe)
+  could not find an app file at "_build/dev/lib/lively/ebin/lively.app". This may happen if the dependency was not yet compiled or the dependency indeed has no app file (then you can pass app: false as option)
+```
+
+## Section
+
+```elixir
+defmodule Organization do
+  use Ecto.Schema
+
+  schema "organizations" do
+    field(:name, :string)
+    has_one(:team, Team)
+  end
+end
+
+defmodule Team do
+  use Ecto.Schema
+
+  schema "teams" do
+    field(:name, :string)
+    has_many(:persons, Person)
+  end
+end
+
+defmodule Person do
+  use Ecto.Schema
+
+  schema "persons" do
+    field(:name, :string)
+    field(:age, :integer)
+
+    has_one(:team, Team)
+    belongs_to(:organization, Organization)
+  end
+end
+
+Organization
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Organization
+```
