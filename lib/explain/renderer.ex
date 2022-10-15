@@ -69,7 +69,6 @@ defmodule Lively.Explain.Renderer do
     end
 
     defp meta_value({:timing, timing_ms}), do: "timing: #{timing_ms}ms"
-    defp meta_value({:sort_key, sort_keys}), do: "key: #{Enum.join(sort_keys, ", ")}"
     defp meta_value({key, val}), do: "#{key}: #{val}"
   end
 end

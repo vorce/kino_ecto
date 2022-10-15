@@ -1,6 +1,8 @@
 defmodule Lively do
   defstruct [:schema]
 
+  defdelegate explain(repo, operation, queryable, opts \\ []), to: Lively.Explain, as: :call
+
   defimpl Kino.Render, for: Lively do
     defp is_ecto_schema?(%{__meta__: %Ecto.Schema.Metadata{}}), do: true
     defp is_ecto_schema?(_), do: false

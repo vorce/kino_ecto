@@ -17,6 +17,9 @@ defmodule Lively.Explain do
     format: :map
   ]
 
+  @doc """
+  Creates a `Lively.Explain` struct that can be rendered based on a queryable.
+  """
   def call(repo, operation, queryable, opts \\ []) do
     opts = Keyword.merge(opts, @postgres_opts)
 
