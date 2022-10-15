@@ -1,6 +1,6 @@
 <!-- livebook:{"persist_outputs":true} -->
 
-# Lively Demo
+# Lively Demo!
 
 ```elixir
 Mix.install([
