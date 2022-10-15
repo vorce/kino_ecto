@@ -78,6 +78,7 @@ defmodule Lively.Explain do
       end
 
       #{lines}
+      classDef default text-align: left;
       """
 
       graph
