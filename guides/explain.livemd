@@ -9,8 +9,6 @@ Mix.install([
 
 ## Explain
 
-Only supports postgres!
-
 ```elixir
 # Can also do: `Lively.Explain.call(MyApp.Repo, :all, my_ecto_query)` to visualize the explain for a specific query.
 
@@ -168,6 +166,6 @@ top_plan = List.first(plan)
 %Lively.Explain{
   execution_time: top_plan["Execution Time"],
   planning_time: top_plan["Planning Time"],
-  plan: Lively.Explain.build_tree(top_plan["Plan"])
+  plan: Lively.Explain.Node.build_tree(top_plan["Plan"])
 }
 ```
