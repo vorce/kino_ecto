@@ -12,10 +12,49 @@ Mix.install([
 <!-- livebook:{"output":true} -->
 
 ```
-Could not compile :lively, no "mix.exs", "rebar.config" or "Makefile" (pass :compile as an option to customize compilation, set it to "false" to do nothing)
-Unchecked dependencies for environment dev:
-* lively (/Users/filipe)
-  could not find an app file at "_build/dev/lib/lively/ebin/lively.app". This may happen if the dependency was not yet compiled or the dependency indeed has no app file (then you can pass app: false as option)
+* Getting lively (https://github.com/spawnfest/lively)
+remote: Enumerating objects: 14, done.        
+remote: Counting objects: 100% (14/14), done.        
+remote: Compressing objects: 100% (13/13), done.        
+remote: Total 14 (delta 0), reused 14 (delta 0), pack-reused 0        
+origin/HEAD set to main
+Resolving Hex dependencies...
+Dependency resolution completed:
+New:
+  decimal 2.0.0
+  ecto 3.9.1
+  kino 0.7.0
+  table 0.1.2
+  telemetry 1.1.0
+* Getting ecto (Hex package)
+* Getting kino (Hex package)
+* Getting table (Hex package)
+* Getting decimal (Hex package)
+* Getting telemetry (Hex package)
+==> decimal
+Compiling 4 files (.ex)
+Generated decimal app
+==> table
+Compiling 5 files (.ex)
+Generated table app
+==> kino
+Compiling 36 files (.ex)
+Generated kino app
+===> Analyzing applications...
+===> Compiling telemetry
+==> ecto
+Compiling 56 files (.ex)
+Generated ecto app
+==> lively
+warning: the dependency :lively requires Elixir "~> 1.14" but you are running on v1.14.0-rc.0
+Compiling 3 files (.ex)
+Generated lively app
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
 ```
 
 ## Section
