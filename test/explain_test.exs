@@ -157,33 +157,27 @@ defmodule Lively.ExplainTest do
     plan = List.first(@explain_example)["Plan"]
 
     assert Explain.build_tree(plan) == %Node{
-             cost: nil,
-             left: %Node{
-               cost: nil,
-               left: %Node{
-                 cost: nil,
-                 left: nil,
-                 right: nil,
-                 rows: nil,
-                 timing: nil,
-                 type: "Index Scan"
-               },
-               right: %Node{
-                 type: "Seq Scan",
-                 left: nil,
-                 right: nil,
-                 timing: nil,
-                 rows: nil,
-                 cost: nil
-               },
-               rows: nil,
-               timing: nil,
-               type: "Append"
-             },
-             right: nil,
-             rows: nil,
+             type: "Result",
              timing: nil,
-             type: "Result"
+             rows: nil,
+             cost: nil,
+             children: [
+               %Node{
+                 type: "Append",
+                 timing: nil,
+                 rows: nil,
+                 cost: nil,
+                 children: [
+                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Seq Scan", timing: nil, rows: nil, cost: nil, children: []},
+                   %Node{type: "Index Scan", timing: nil, rows: nil, cost: nil, children: []}
+                 ]
+               }
+             ]
            }
   end
 

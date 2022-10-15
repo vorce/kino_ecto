@@ -7,11 +7,10 @@ defmodule Lively.Explain do
   defmodule Node do
     defstruct [
       :type,
-      :left,
-      :right,
       :timing,
       :rows,
-      :cost
+      :cost,
+      children: []
     ]
   end
 
@@ -47,11 +46,17 @@ defmodule Lively.Explain do
   def build_tree(nil), do: nil
 
   def build_tree(plan) do
-    %Node{
-      type: Map.get(plan, "Node Type", "Unknown"),
-      left: plan |> Map.get("Plans", []) |> List.first() |> build_tree(),
-      right: plan |> Map.get("Plans", []) |> Enum.at(1) |> build_tree()
-    }
+    plan
+    |> Map.get("Plans", [])
+    |> Enum.reduce(%Node{type: Map.get(plan, "Node Type", "Unknown")}, fn child_plan, acc ->
+      child_tree = build_tree(child_plan)
+
+      if is_nil(child_tree) do
+        acc
+      else
+        %Node{acc | children: [child_tree | acc.children]}
+      end
+    end)
   end
 
   defimpl Kino.Render, for: Lively.Explain do
@@ -81,43 +86,28 @@ defmodule Lively.Explain do
       |> Kino.Render.to_livebook()
     end
 
+    defp node_mermaid_lines(%Node{children: []}, _, acc), do: acc
+
     defp node_mermaid_lines(
-           %Node{left: %Node{} = left, right: %Node{} = right, type: val},
+           %Node{children: children, type: val},
            label,
            acc
          ) do
-      left_label = label <> "L"
-      right_label = label <> "R"
+      lines =
+        children
+        |> Enum.with_index()
+        |> Enum.reduce("", fn {child, index}, node_lines ->
+          child_label = "#{label}#{index}"
+          node_lines <> "\t#{label}(#{val})-->#{child_label}(#{child.type})\n"
+        end)
 
-      line =
-        "\t#{label}((#{val}))-->#{left_label}((#{left.type}))\n" <>
-          "\t#{label}-->#{right_label}((#{right.type}))\n"
-
-      line <>
-        node_mermaid_lines(left, left_label, acc) <>
-        node_mermaid_lines(right, right_label, acc)
-    end
-
-    defp node_mermaid_lines(%Node{left: nil, right: nil}, _, acc), do: acc
-
-    defp node_mermaid_lines(
-           %Node{left: %Node{} = left, right: nil, type: val},
-           label,
-           acc
-         ) do
-      left_label = label <> "L"
-      line = "\t#{label}((#{val}))-->#{left_label}((#{left.type}))\n"
-      line <> node_mermaid_lines(left, left_label, acc)
-    end
-
-    defp node_mermaid_lines(
-           %Node{left: nil, right: %Node{} = right, type: val},
-           label,
-           acc
-         ) do
-      right_label = label <> "R"
-      line = "\t#{label}((#{val}))-->#{right_label}((#{right.type}))\n"
-      line <> node_mermaid_lines(right, right_label, acc)
+      lines <>
+        (children
+         |> Enum.with_index()
+         |> Enum.reduce("", fn {child, index}, child_lines ->
+           child_label = "#{label}#{index}"
+           child_lines <> node_mermaid_lines(child, child_label, acc)
+         end))
     end
   end
 end
