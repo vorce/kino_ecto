@@ -84,6 +84,7 @@ Existing components:
 * `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
 * `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now). See [guides/explain.livemd](guides/explain.livemd) for examples.
 * `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes. 
+* `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params. (Unfinished)
 A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 
 ### Entity Relantionship Diagram from Schemas
