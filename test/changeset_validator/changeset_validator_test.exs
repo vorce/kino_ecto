@@ -37,9 +37,15 @@ defmodule Lively.ChangesetValidatorTest do
       email: "this.is.wrong.com"
     }
 
-    assert %Kino.Markdown{content: _content} = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.changeset/2, attrs: args})
-    # assert content.errors == [{:age, {"is invalid", [validation: :inclusion, enum: 18..100]}}, {:email, {"has invalid format", [validation: :format]}}]
-    # assert content.valid? == false
+    assert {
+              :tabs,
+              [
+                text: _,
+                markdown: md
+              ],
+              %{labels: ["Raw", "Changeset Validator Result"]}
+            } = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.changeset/2, attrs: args})
+    assert md =~ "Changeset valid? false.\n\n  Errors: [age: {\"is invalid\", [validation: :inclusion, enum: 18..100]}, email: {\"has invalid format\", [validation: :format]}].\n"
   end
 
   test "renders another evaluated changeset for given set of inputs for a module" do
@@ -49,8 +55,14 @@ defmodule Lively.ChangesetValidatorTest do
       email: "john@email.com"
     }
 
-    assert %Kino.Markdown{content: _content} = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.another_changeset/2, attrs: args})
-    # assert content.errors == [age: {"is invalid", [validation: :inclusion, enum: 21..100]}]
-    # assert content.valid? == false
+    assert {
+              :tabs,
+              [
+                text: _,
+                markdown: md
+              ],
+              %{labels: ["Raw", "Changeset Validator Result"]}
+            } = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.another_changeset/2, attrs: args})
+    assert md =~ "Changeset valid? false.\n\n  Errors: [age: {\"is invalid\", [validation: :inclusion, enum: 21..100]}].\n"
   end
 end
