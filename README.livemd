@@ -12,6 +12,8 @@ Mix.install(
 
 ## Lively - Ecto utilities for Livebook
 
+For a better experience, see this Readme using [Livebook](https://livebook.dev/)
+
 Lively is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
 
 Existing components:
@@ -22,7 +24,7 @@ Existing components:
   The next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 * `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params.
 
-**Note: ** All the code is WIP and should be seen as such
+**Note:** All the code is WIP and should be seen as such
 
 ## Entity Relationship Diagram
 
@@ -291,3 +293,15 @@ If a developer is more accustomed to SQL and not Ecto.Query, this tool can guide
 ```elixir
 %Lively.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
 ```
+
+## Future Work
+
+Other than a lot of bug fixing, in the future, we want to improve the code we have so we can build a more solid and faster toolset that can enable users to have more information about their systems.
+
+For now, we're checking what we can do with Ecto since it's a common library but we already thought about future work such as:
+
+* JSON visualizer
+* Oban tools
+* Ecto migration tracker (what and when was a given schema changed)
+
+This can be just the beginning of Lively.
