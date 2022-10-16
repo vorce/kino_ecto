@@ -1,5 +1,6 @@
 defmodule Lively.QueryBuilder do
   defstruct [:sql_query]
+  import Ecto.Query
 
   defmodule Person do
     use Ecto.Schema
@@ -67,15 +68,53 @@ defmodule Lively.QueryBuilder do
     defparsec(:where_part, where_part)
   end
 
+  def test(query) do
+    from_part = MyParser.from_part(query)
+    join_part = MyParser.join_part(query)
+    where_part = MyParser.where_part(query)
+
+    [elem(from_part, 1), elem(join_part, 1), elem(where_part, 1)]
+  end
+
   def call(query) do
     from_part = MyParser.from_part(query)
     join_part = MyParser.join_part(query)
     where_part = MyParser.where_part(query)
 
     from = elem(from_part, 1)
+    join_part = elem(join_part, 1)
+    where_part = elem(where_part, 1)
     # [, elem(join_part, 1), elem(where_part, 1)]
 
-    %Ecto.Query{from: %Ecto.Query.FromExpr{source: get_source(List.last(from))}}
+    build_from(from)
+    |> build_join(join_part)
+    |> build_where(where_part)
+  end
+
+  defp build_from(from_part) do
+    %Ecto.Query{
+      from: %Ecto.Query.FromExpr{
+        source: get_source(List.last(from_part)),
+        as: String.to_atom(List.last(from_part))
+      }
+    }
+  end
+
+  defp build_join(query, []), do: query
+
+  defp build_join(query, [join, table_name, on, field1, equal, field2] = join_part) do
+    query
+  end
+
+  defp build_where(query, []), do: query
+
+  defp build_where(query, [_where, field_name, comparisson | tail]) do
+    query
+    # |> where_from_parser(query, comparisson, field_name, Enum.join(tail, ","))
+  end
+
+  defp where_from_parser("=", field_name, value) do
+    value
   end
 
   defp get_source(table_name) do
@@ -84,7 +123,6 @@ defmodule Lively.QueryBuilder do
     modules
     |> Enum.filter(&({:__schema__, 1} in &1.__info__(:functions)))
     |> Enum.find(fn module -> module.__schema__(:source) == table_name end)
-    |> IO.inspect()
     |> then(fn schema -> {table_name, schema} end)
   end
 

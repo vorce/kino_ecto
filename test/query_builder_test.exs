@@ -9,6 +9,7 @@ defmodule Lively.QueryBuilderTest do
     query = "SELECT * FROM persons WHERE name = 'John'"
 
     IO.inspect(QueryBuilder.call(query))
+    IO.inspect(QueryBuilder.test(query))
   end
 
   test "parses simple with where" do
