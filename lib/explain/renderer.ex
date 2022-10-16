@@ -54,8 +54,7 @@ defmodule Lively.Explain.Renderer do
     end
 
     defp node_value(%Node{} = node) do
-      node_details =
-        if is_nil(node.details), do: "", else: "<br><span>#{sanitize(node.details)}</span>"
+      node_details = if is_nil(node.details), do: "", else: "<br><span>#{sanitize(node.details)}</span>"
 
       meta_items = Enum.map(node.meta, fn kv -> "<li>#{meta_value(kv)}</li>" end)
       node_meta = if node.meta == [], do: "", else: "<small><ul>#{meta_items}</ul></small>"

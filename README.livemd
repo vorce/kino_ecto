@@ -59,6 +59,11 @@ end
 ```
 
 ```elixir
-alias Lively.EntityRelationship
-%EntityRelationship{}
+Person
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Person
 ```
