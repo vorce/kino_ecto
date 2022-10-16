@@ -23,7 +23,8 @@ defmodule Lively.MixProject do
     [
       {:kino, "~> 0.7.0"},
       {:ecto, "~> 3.8"},
-      {:ecto_sql, "~> 3.8"}
+      {:ecto_sql, "~> 3.8"},
+      {:nimble_parsec, "~> 1.2"}
     ]
   end
 end
