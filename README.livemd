@@ -18,7 +18,6 @@ Existing components:
 * `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes.
   A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 * `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params. (Unfinished)
-A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 
 ## Entity Relationship Diagram
 
