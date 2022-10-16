@@ -83,8 +83,8 @@ Existing components:
 
 * `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
 * `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now). See [guides/explain.livemd](guides/explain.livemd) for examples.
-* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset`
-* ...
+* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes. 
+A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 
 ### Entity Relantionship Diagram from Schemas
 
@@ -169,3 +169,8 @@ args = %{
 
 <!-- livebook:{"output":true} -->
 
+```
+Changeset valid? false.
+
+Errors: [age: {"is invalid", [validation: :inclusion, enum: 18..100]}, email: {"has invalid format", [validation: :format]}].
+```
