@@ -1,75 +1,19 @@
 defmodule Lively do
-  defstruct [:schema]
+  alias Lively.EntityRelationship
 
   defdelegate explain(repo, operation, queryable, opts \\ []), to: Lively.Explain, as: :call
 
-  defimpl Kino.Render, for: Lively do
-    defp is_ecto_schema?(%{__meta__: %Ecto.Schema.Metadata{}}), do: true
-    defp is_ecto_schema?(_), do: false
+  defimpl Kino.Render, for: EntityRelationship do
+    def to_livebook(%{schema: %{__meta__: %Ecto.Schema.Metadata{}} = module}) do
+      tabs =
+        Kino.Layout.tabs(
+          Raw: Kino.Inspect.new(module),
+          "Entity Relationship Diagram": EntityRelationship.call(module)
+        )
 
-    def to_livebook(struct) do
-      if is_ecto_schema?(struct.schema) do
-        er =
-          struct.schema
-          |> Lively.Visualize.call()
-
-        tabs =
-          Kino.Layout.tabs(
-            Raw: Kino.Inspect.new(struct.schema),
-            "Entity Relationship Diagram": er
-          )
-
-        Kino.Render.to_livebook(tabs)
-      else
-        Kino.Render.to_livebook(struct.schema)
-      end
-    end
-  end
-
-  defimpl Kino.Render, for: Atom do
-    def to_livebook(atom) do
-      case Code.ensure_loaded(atom) do
-        {:error, :nofile} ->
-          cond do
-            application_with_supervisor?(atom) ->
-              raw = Kino.Inspect.new(atom)
-              tree = Kino.Process.app_tree(atom, direction: :left_right)
-              tabs = Kino.Layout.tabs(Raw: raw, "Application tree": tree)
-              Kino.Render.to_livebook(tabs)
-
-            Kino.Utils.supervisor?(atom) ->
-              raw = Kino.Inspect.new(atom)
-              tree = Kino.Process.sup_tree(atom, direction: :left_right)
-              tabs = Kino.Layout.tabs(Raw: raw, "Supervision tree": tree)
-              Kino.Render.to_livebook(tabs)
-
-            true ->
-              Kino.Output.inspect(atom)
-          end
-
-        _ ->
-          with struct when not is_nil(struct) <- atom.__info__(:struct),
-               has_meta when not is_nil(has_meta) <-
-                 Enum.any?(struct, fn %{field: field} -> field == :__meta__ end) do
-            er =
-              atom
-              |> Lively.Visualize.call()
-
-            tabs =
-              Kino.Layout.tabs(Raw: Kino.Inspect.new(atom), "Entity Relationship Diagram": er)
-
-            Kino.Render.to_livebook(tabs)
-          else
-            _ -> Kino.Output.inspect(atom)
-          end
-      end
+      Kino.Render.to_livebook(tabs)
     end
 
-    defp application_with_supervisor?(name) do
-      with master when master != :undefined <- :application_controller.get_master(name),
-           {root, _application} when is_pid(root) <- :application_master.get_child(master),
-           do: true,
-           else: (_ -> false)
-    end
+    def to_livebook(module), do: Kino.Render.to_livebook(module)
   end
 end
