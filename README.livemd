@@ -1,78 +1,10 @@
-<!-- livebook:{"persist_outputs":true} -->
-
 # Lively Demo
 
 ```elixir
-Mix.install(
-  [
-    {:ecto, "~> 3.8"},
-    {:lively, git: "https://github.com/spawnfest/lively"}
-  ],
-  force: true
-)
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-* Getting lively (https://github.com/spawnfest/lively)
-remote: Enumerating objects: 112, done.        
-remote: Counting objects: 100% (112/112), done.        
-remote: Compressing objects: 100% (71/71), done.        
-remote: Total 112 (delta 55), reused 92 (delta 35), pack-reused 0        
-origin/HEAD set to main
-Resolving Hex dependencies...
-Dependency resolution completed:
-New:
-  connection 1.1.0
-  db_connection 2.4.2
-  decimal 2.0.0
-  ecto 3.9.1
-  ecto_sql 3.9.0
-  kino 0.7.0
-  table 0.1.2
-  telemetry 1.1.0
-* Getting ecto (Hex package)
-* Getting kino (Hex package)
-* Getting ecto_sql (Hex package)
-* Getting db_connection (Hex package)
-* Getting telemetry (Hex package)
-* Getting connection (Hex package)
-* Getting table (Hex package)
-* Getting decimal (Hex package)
-==> connection
-Compiling 1 file (.ex)
-Generated connection app
-==> decimal
-Compiling 4 files (.ex)
-Generated decimal app
-==> table
-Compiling 5 files (.ex)
-Generated table app
-==> kino
-Compiling 36 files (.ex)
-Generated kino app
-===> Analyzing applications...
-===> Compiling telemetry
-==> db_connection
-Compiling 14 files (.ex)
-Generated db_connection app
-==> ecto
-Compiling 56 files (.ex)
-Generated ecto app
-==> ecto_sql
-Compiling 25 files (.ex)
-Generated ecto_sql app
-==> lively
-warning: the dependency :lively requires Elixir "~> 1.14" but you are running on v1.14.0-rc.0
-Compiling 7 files (.ex)
-Generated lively app
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-:ok
+Mix.install([
+  {:ecto, "~> 3.8"},
+  {:lively, git: "https://github.com/spawnfest/lively", force: true}
+])
 ```
 
 ## Lively - Ecto utilities for Livebook
@@ -82,12 +14,17 @@ Lively is a collection of utilities for working with Ecto and Livebook.
 Existing components:
 
 * `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
-* `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now). See [guides/explain.livemd](guides/explain.livemd) for examples.
-* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes. 
+* `Lively.Explain`: Visualize the query plan for an `Ecto.Query`.
+* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes.
+  A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 * `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params. (Unfinished)
 A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
 
-### Entity Relantionship Diagram from Schemas
+## Entity Relationship Diagram
+
+Using the `%Lively.EntityRelantionship{schema: Module}` you will be able to visualize a Entity Relationship Diagram and connected entities based on your Ecto.Schema.
+
+### Example:
 
 ```elixir
 defmodule Organization do
@@ -123,55 +60,195 @@ end
 %Lively.EntityRelationship{schema: Person}
 ```
 
-<!-- livebook:{"output":true} -->
+## Explain
 
-```
-Person
-```
+With a given plan, you are able to draw a graph to better visualize the result of your query analysis using `Lively.Explain.new(plan)`.
 
-### Changeset Validator from Schemas
+You can also use `Lively.Explain.call(MyApp.Repo, :all, my_ecto_query)` so it's easier to run the plan and output the graph in one go.
+
+**Note**: Only Postgres is supported at the moment
+
+### Example
 
 ```elixir
-defmodule TestUser do
+plan = [
+  %{
+    "Plan" => %{
+      "Actual Loops" => 1,
+      "Actual Rows" => 4,
+      "Actual Startup Time" => 0.139,
+      "Actual Total Time" => 0.231,
+      "Node Type" => "Result",
+      "Plan Rows" => 7,
+      "Plan Width" => 405,
+      "Plans" => [
+        %{
+          "Actual Loops" => 1,
+          "Actual Rows" => 4,
+          "Actual Startup Time" => 0.131,
+          "Actual Total Time" => 0.218,
+          "Node Type" => "Append",
+          "Parent Relationship" => "Outer",
+          "Plan Rows" => 7,
+          "Plan Width" => 405,
+          "Plans" => [
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.009,
+              "Actual Total Time" => 0.009,
+              "Alias" => "paris",
+              "Filter" => "(ar_num = 8)",
+              "Index Cond" => "(tags ? 'tourism'::text)",
+              "Index Name" => "idx_paris_tags",
+              "Node Type" => "Index Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 450,
+              "Relation Name" => "paris",
+              "Scan Direction" => "NoMovement",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 8.27
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.001,
+              "Actual Total Time" => 0.001,
+              "Alias" => "paris",
+              "Filter" => "((tags ? 'tourism'::text) AND (ar_num = 8))",
+              "Node Type" => "Seq Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 450,
+              "Relation Name" => "paris_linestrings",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 11.8
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.003,
+              "Actual Total Time" => 0.003,
+              "Alias" => "paris",
+              "Filter" => "(ar_num = 8)",
+              "Index Cond" => "(tags ? 'tourism'::text)",
+              "Index Name" => "idx_paris_points_tags",
+              "Node Type" => "Index Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 450,
+              "Relation Name" => "paris_points",
+              "Scan Direction" => "NoMovement",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 8.27
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.002,
+              "Actual Total Time" => 0.002,
+              "Alias" => "paris",
+              "Filter" => "(ar_num = 8)",
+              "Index Cond" => "(tags ? 'tourism'::text)",
+              "Index Name" => "idx_paris_polygons_tags",
+              "Node Type" => "Index Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 450,
+              "Relation Name" => "paris_polygons",
+              "Scan Direction" => "NoMovement",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 8.27
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.103,
+              "Actual Total Time" => 0.103,
+              "Alias" => "paris",
+              "Filter" => "((tags ? 'tourism'::text) AND (ar_num = 8))",
+              "Node Type" => "Seq Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 513,
+              "Relation Name" => "paris_linestrings_ar_08",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 7.27
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 4,
+              "Actual Startup Time" => 0.009,
+              "Actual Total Time" => 0.085,
+              "Alias" => "paris",
+              "Filter" => "((tags ? 'tourism'::text) AND (ar_num = 8))",
+              "Node Type" => "Seq Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 72,
+              "Relation Name" => "paris_points_ar_08",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 5.16
+            },
+            %{
+              "Actual Loops" => 1,
+              "Actual Rows" => 0,
+              "Actual Startup Time" => 0.007,
+              "Actual Total Time" => 0.007,
+              "Alias" => "paris",
+              "Filter" => "((tags ? 'tourism'::text) AND (ar_num = 8))",
+              "Node Type" => "Seq Scan",
+              "Parent Relationship" => "Member",
+              "Plan Rows" => 1,
+              "Plan Width" => 450,
+              "Relation Name" => "paris_polygons_ar_08",
+              "Startup Cost" => 0.0,
+              "Total Cost" => 1.08
+            }
+          ],
+          "Startup Cost" => 0.0,
+          "Total Cost" => 50.11
+        }
+      ],
+      "Startup Cost" => 0.0,
+      "Total Cost" => 50.13
+    },
+    "Execution Time" => 1.238,
+    "Planning Time" => 0.92,
+    "Triggers" => []
+  }
+]
+
+Lively.Explain.new(plan)
+```
+
+## Changeset Validator
+
+A simpler way to visualize errors of applying changes to an entity using the changeset results. To use it you just need to create a struct `%ChangesetValidator{fun: Module.changeset_func/arity, attrs: attrs}`
+
+### Example
+
+```elixir
+defmodule User do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "users" do
-    field :name, :string
-    field :age, :integer, default: 0
-    field :email, :string
+    field(:name, :string)
+    field(:age, :integer)
+    field(:address, :string)
   end
 
-  def changeset(user, attrs) do
-    user
-    |> cast(attrs, [:name, :age, :email])
-    |> validate_required(:name)
-    |> validate_format(:email, ~r/@/)
+  def new_user_changeset(name, age) do
+    params = %{name: name, age: age}
+
+    %__MODULE__{}
+    |> cast(params, [:name, :age])
+    |> validate_required([:name])
     |> validate_inclusion(:age, 18..100)
-  end
-
-  def another_changeset(user, attrs) do
-    user
-    |> cast(attrs, [:name, :age, :email])
-    |> validate_required(:name)
-    |> validate_format(:email, ~r/@/)
-    |> validate_inclusion(:age, 21..100)
   end
 end
 
-args = %{
-      name: "John",
-      age: -1,
-      email: "this.is.wrong.com"
-  }
-
-%Lively.ChangesetValidator{fun: &TestUser.changeset/2, attrs: args}
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-Changeset valid? false.
-
-Errors: [age: {"is invalid", [validation: :inclusion, enum: 18..100]}, email: {"has invalid format", [validation: :format]}].
+%Lively.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 13]}
 ```

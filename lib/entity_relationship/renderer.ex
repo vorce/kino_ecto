@@ -24,9 +24,8 @@ defmodule Lively.EntityRelationship.Renderer do
         _ -> ".."
       end
 
-    linked_struct = fields |> hd() |> elem(0)
     class_def = Enum.flat_map(fields, &mermaid(&1, []))
-    relationship_def = ["#{struct} #{relantionship} #{linked_struct}"]
+    relationship_def = fields |> Enum.map(&elem(&1, 0)) |> Enum.map(&"#{struct} #{relantionship} #{&1}")
     type_def = "#{struct} : #{type} #{field}"
     acc ++ class_def ++ relationship_def ++ [type_def]
   end
