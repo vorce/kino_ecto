@@ -21,9 +21,15 @@ defmodule Lively.Explain.Renderer do
       classDef default text-align: left;
       """
 
-      graph
-      |> Kino.Mermaid.new()
-      |> Kino.Render.to_livebook()
+      plan = Kino.Mermaid.new(graph)
+
+      if is_nil(explain.raw) do
+        Kino.Render.to_livebook(plan)
+      else
+        [Plan: plan, Raw: explain.raw]
+        |> Kino.Layout.tabs()
+        |> Kino.Render.to_livebook()
+      end
     end
 
     defp node_mermaid_lines(%Node{children: []}, _, acc), do: acc

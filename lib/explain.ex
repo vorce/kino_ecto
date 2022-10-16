@@ -4,7 +4,7 @@ defmodule Lively.Explain do
   """
   alias Lively.Explain.Node
 
-  defstruct [:plan, :execution_time, :planning_time]
+  defstruct [:plan, :execution_time, :planning_time, :raw]
 
   @postgres_opts [
     analyze: true,
@@ -34,7 +34,8 @@ defmodule Lively.Explain do
     %__MODULE__{
       execution_time: top_plan["Execution Time"],
       planning_time: top_plan["Planning Time"],
-      plan: Node.build_tree(top_plan["Plan"])
+      plan: Node.build_tree(top_plan["Plan"]),
+      raw: explain_result
     }
   end
 end
