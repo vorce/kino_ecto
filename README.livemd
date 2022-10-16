@@ -77,6 +77,15 @@ Generated lively app
 
 ## Lively - Ecto utilities for Livebook
 
+Lively is a collection of utilities for working with Ecto and Livebook.
+
+Existing components:
+
+* `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
+* `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now)
+* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset`
+* ...
+
 ### Entity Relantionship Diagram from Schemas
 
 ```elixir
