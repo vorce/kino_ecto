@@ -9,7 +9,7 @@ defmodule Lively.ChangesetValidator do
   def call(%__MODULE__{fun: fun, attrs: attrs}) do
     info = Function.info(fun)
     module = Keyword.get(info, :module)
-
+    IO.inspect({info, module})
     result = fun.(struct(module), attrs)
 
     Renderer.call(result)

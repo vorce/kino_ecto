@@ -1,28 +1,28 @@
 defmodule Lively.EntityRelationship.Introspect do
-  def call(%atom{} = struct) when is_struct(struct), do: call(atom)
-  def call(struct), do: introspect_fields(struct, assocs(struct))
+  def call(struct, acc \\ [])
+  def call(%atom{} = struct, acc) when is_struct(struct), do: call(atom, acc)
+  def call(struct, acc), do: introspect_fields(struct, assocs(struct), acc)
 
-  defp introspect_fields(struct, assocs) do
-    struct_name = inspect(struct)
-
+  defp introspect_fields(struct, assocs, acc) do
     struct.__schema__(:fields)
     |> Enum.map(fn field -> {field, struct.__schema__(:type, field)} end)
-    |> Enum.map(fn {field, type} ->
+    |> Enum.reduce(acc, fn {field, type}, acc ->
+      struct_name = inspect(struct)
+
       case Enum.find(assocs, fn {_, _, owner_key, _, _} -> field == owner_key end) do
         nil ->
-          {struct_name, field, type}
+          acc ++ [{struct_name, field, type}]
 
         {field, inner_struct, type, relationship, cardinality} ->
           case halt?(assocs(inner_struct), struct) do
             true ->
-              nil
+              acc
 
             false ->
-              {struct_name, field, call(inner_struct), type, relationship, cardinality}
+              acc ++ [{struct_name, field, call(inner_struct), type, relationship, cardinality}]
           end
       end
     end)
-    |> Enum.reject(&is_nil/1)
   end
 
   defp assocs(struct) do
