@@ -6,9 +6,7 @@ defmodule Lively.ChangesetValidator.Renderer do
   def call(changeset_result) do
     errors =
       changeset_result.errors
-      |> Enum.map(fn {field, {message, stuff}} ->
-        "`#{field}`: #{message} due to `#{Keyword.get(stuff, :validation)}` validation"
-      end)
+      |> Enum.map(&build_error/1)
       |> Enum.map(&"* #{&1}")
       |> Enum.join("\n")
 
@@ -24,5 +22,9 @@ defmodule Lively.ChangesetValidator.Renderer do
     """
 
     Kino.Markdown.new(content)
+  end
+
+  defp build_error({field, {message, error_data}}) do
+    "`#{field}`: #{message} due to `#{Keyword.get(error_data, :validation)}` validation"
   end
 end
