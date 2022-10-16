@@ -3,10 +3,70 @@
 # Lively Demo
 
 ```elixir
-Mix.install([
-  {:ecto, "~> 3.8"},
-  {:lively, git: "https://github.com/spawnfest/lively"}
-])
+Mix.install(
+  [
+    {:ecto, "~> 3.8"},
+    {:lively, git: "https://github.com/spawnfest/lively"}
+  ],
+  force: true
+)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+* Getting lively (https://github.com/spawnfest/lively)
+remote: Enumerating objects: 112, done.        
+remote: Counting objects: 100% (112/112), done.        
+remote: Compressing objects: 100% (71/71), done.        
+remote: Total 112 (delta 55), reused 92 (delta 35), pack-reused 0        
+origin/HEAD set to main
+Resolving Hex dependencies...
+Dependency resolution completed:
+New:
+  connection 1.1.0
+  db_connection 2.4.2
+  decimal 2.0.0
+  ecto 3.9.1
+  ecto_sql 3.9.0
+  kino 0.7.0
+  table 0.1.2
+  telemetry 1.1.0
+* Getting ecto (Hex package)
+* Getting kino (Hex package)
+* Getting ecto_sql (Hex package)
+* Getting db_connection (Hex package)
+* Getting telemetry (Hex package)
+* Getting connection (Hex package)
+* Getting table (Hex package)
+* Getting decimal (Hex package)
+==> connection
+Compiling 1 file (.ex)
+Generated connection app
+==> decimal
+Compiling 4 files (.ex)
+Generated decimal app
+==> table
+Compiling 5 files (.ex)
+Generated table app
+==> kino
+Compiling 36 files (.ex)
+Generated kino app
+===> Analyzing applications...
+===> Compiling telemetry
+==> db_connection
+Compiling 14 files (.ex)
+Generated db_connection app
+==> ecto
+Compiling 56 files (.ex)
+Generated ecto app
+==> ecto_sql
+Compiling 25 files (.ex)
+Generated ecto_sql app
+==> lively
+warning: the dependency :lively requires Elixir "~> 1.14" but you are running on v1.14.0-rc.0
+Compiling 7 files (.ex)
+Generated lively app
 ```
 
 <!-- livebook:{"output":true} -->
@@ -49,17 +109,8 @@ defmodule Person do
     belongs_to(:organization, Organization)
   end
 end
-```
 
-<!-- livebook:{"output":true} -->
-
-```
-{:module, Person, <<70, 79, 82, 49, 0, 0, 19, ...>>,
- [__schema__: 1, __schema__: 1, __schema__: 1, __schema__: 1, __schema__: 2, __schema__: 2, ...]}
-```
-
-```elixir
-Person
+%Lively.EntityRelationship{schema: Person}
 ```
 
 <!-- livebook:{"output":true} -->
