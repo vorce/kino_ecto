@@ -161,12 +161,6 @@ plan = [
   }
 ]
 
-top_plan = List.first(plan)
 
-%Lively.Explain{
-  execution_time: top_plan["Execution Time"],
-  planning_time: top_plan["Planning Time"],
-  plan: Lively.Explain.Node.build_tree(top_plan["Plan"]),
-  raw: plan
-}
+Lively.Explain.new(plan)
 ```
