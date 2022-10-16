@@ -12,15 +12,17 @@ Mix.install(
 
 ## Lively - Ecto utilities for Livebook
 
-Lively is a collection of utilities for working with Ecto and Livebook.
+Lively is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
 
 Existing components:
 
 * `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
 * `Lively.Explain`: Visualize the query plan for an `Ecto.Query`.
 * `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes.
-  A next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
-* `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params. (Unfinished)
+  The next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
+* `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params.
+
+**Note: ** All the code is WIP and should be seen as such
 
 ## Entity Relationship Diagram
 
@@ -64,11 +66,11 @@ end
 
 ## Explain
 
-With a given plan, you are able to draw a graph to better visualize the result of your query analysis using `Lively.Explain.new(plan)`.
+With a given plan, you can draw a graph to better visualize the result of your query analysis using `Lively.Explain.new(plan)`.
 
 You can also use `Lively.Explain.call(MyApp.Repo, :all, my_ecto_query)` so it's easier to run the plan and output the graph in one go.
 
-**Note**: Only Postgres is supported at the moment
+**Note:** Only Postgres is supported at the moment
 
 ### Example
 
@@ -280,17 +282,12 @@ end
 
 ### Generate Ecto Query from SQL
 
+<!-- livebook:{"break_markdown":true} -->
+
+If a developer is more accustomed to SQL and not Ecto.Query, this tool can guide them on the construction of an Ecto.Query that replicated the SQL they expected.
+
+### Example
+
 ```elixir
-defmodule TestUser do
-  use Ecto.Schema
-  import Ecto.Changeset
-
-  schema "users" do
-    field(:name, :string)
-    field(:age, :integer, default: 0)
-    field(:email, :string)
-  end
-end
-
 %Lively.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
 ```

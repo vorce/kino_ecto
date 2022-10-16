@@ -1,6 +1,7 @@
 defmodule Lively.QueryBuilder do
   defstruct [:sql_query]
   import Ecto.Query
+  alias Lively.QueryBuilder.Renderer
 
   defmodule MyParser do
     import NimbleParsec
@@ -81,6 +82,7 @@ defmodule Lively.QueryBuilder do
     build_from(from)
     |> build_join(join_part)
     |> build_where(where_part)
+    |> Renderer.call()
   end
 
   defp build_from(from_part) do
@@ -143,7 +145,7 @@ defmodule Lively.QueryBuilder do
   #     ecto_query
   #   end
 
-  #   defp add_where(ecto_query, query) do 
+  #   defp add_where(ecto_query, query) do
   #     %Ecto.Query.BooleanExpr{
   #   end
 
