@@ -37,9 +37,10 @@ defmodule Lively.ChangesetValidatorTest do
       email: "this.is.wrong.com"
     }
 
-    assert %Kino.Markdown{content: content} = ChangesetValidator.call(&TestUser.changeset/2, args)
-    assert content.errors == [age: {"is invalid", [validation: :inclusion, enum: 18..100]}, email: {"has invalid format", [validation: :format]}]
-    assert content.valid? == false
+    assert {
+      :text,
+      "%Lively.ChangesetValidator{\n  \e[34mfun:\e[0m &Lively.ChangesetValidatorTest.TestUser.changeset/2,\n  \e[34mattrs:\e[0m %{\e[34mage:\e[0m \e[34m-1\e[0m, \e[34memail:\e[0m \e[32m\"this.is.wrong.com\"\e[0m, \e[34mname:\e[0m \e[32m\"John\"\e[0m}\n}"
+    } = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.changeset/2, attrs: args})
   end
 
   test "renders another evaluated changeset for given set of inputs for a module" do
@@ -49,8 +50,9 @@ defmodule Lively.ChangesetValidatorTest do
       email: "john@email.com"
     }
 
-    assert %Kino.Markdown{content: content} = ChangesetValidator.call(&TestUser.another_changeset/2, args)
-    assert content.errors == [age: {"is invalid", [validation: :inclusion, enum: 21..100]}]
-    assert content.valid? == false
+    assert {
+      :text,
+      "%Lively.ChangesetValidator{\n  \e[34mfun:\e[0m &Lively.ChangesetValidatorTest.TestUser.another_changeset/2,\n  \e[34mattrs:\e[0m %{\e[34mage:\e[0m \e[34m18\e[0m, \e[34memail:\e[0m \e[32m\"john@email.com\"\e[0m, \e[34mname:\e[0m \e[32m\"John\"\e[0m}\n}"
+    } = Kino.Render.to_livebook(%ChangesetValidator{fun: &TestUser.another_changeset/2, attrs: args})
   end
 end

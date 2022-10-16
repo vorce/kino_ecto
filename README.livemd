@@ -127,3 +127,45 @@ end
 ```
 Person
 ```
+
+### Changeset Validator from Schemas
+
+```elixir
+defmodule TestUser do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "users" do
+    field :name, :string
+    field :age, :integer, default: 0
+    field :email, :string
+  end
+
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:name, :age, :email])
+    |> validate_required(:name)
+    |> validate_format(:email, ~r/@/)
+    |> validate_inclusion(:age, 18..100)
+  end
+
+  def another_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:name, :age, :email])
+    |> validate_required(:name)
+    |> validate_format(:email, ~r/@/)
+    |> validate_inclusion(:age, 21..100)
+  end
+end
+
+args = %{
+      name: "John",
+      age: -1,
+      email: "this.is.wrong.com"
+  }
+
+%Lively.ChangesetValidator{fun: &TestUser.changeset/2, attrs: args}
+```
+
+<!-- livebook:{"output":true} -->
+
