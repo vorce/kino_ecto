@@ -15,53 +15,62 @@ defmodule Lively.NodeTest do
                      children: [],
                      details: "on paris_polygons_ar_08 as paris",
                      meta: [timing: 0.007, rows: 0, cost: 1.08],
-                     type: "Seq Scan"
+                     type: "Seq Scan",
+                     warnings: []
                    },
                    %Node{
                      children: [],
                      details: "on paris_points_ar_08 as paris",
                      meta: [timing: 0.085, rows: 4, cost: 5.16],
-                     type: "Seq Scan"
+                     type: "Seq Scan",
+                     warnings: [{:row_estimation, :underestimated, 4}]
                    },
                    %Node{
                      children: [],
                      details: "on paris_linestrings_ar_08 as paris",
                      meta: [timing: 0.103, rows: 0, cost: 7.27],
-                     type: "Seq Scan"
+                     type: "Seq Scan",
+                     warnings: []
                    },
                    %Node{
                      children: [],
                      details: "on paris_polygons as paris using idx_paris_polygons_tags",
                      meta: [timing: 0.002, rows: 0, cost: 8.27],
-                     type: "Index Scan"
+                     type: "Index Scan",
+                     warnings: []
                    },
                    %Node{
                      children: [],
                      details: "on paris_points as paris using idx_paris_points_tags",
                      meta: [timing: 0.003, rows: 0, cost: 8.27],
-                     type: "Index Scan"
+                     type: "Index Scan",
+                     warnings: []
                    },
                    %Node{
                      children: [],
                      details: "on paris_linestrings as paris",
                      meta: [timing: 0.001, rows: 0, cost: 11.8],
-                     type: "Seq Scan"
+                     type: "Seq Scan",
+                     warnings: []
                    },
                    %Node{
                      children: [],
                      details: "on paris as paris using idx_paris_tags",
                      meta: [timing: 0.009, rows: 0, cost: 8.27],
-                     type: "Index Scan"
+                     type: "Index Scan",
+                     warnings: []
                    }
                  ],
                  details: nil,
                  meta: [timing: 0.218, rows: 4, cost: 50.11],
-                 type: "Append"
+                 type: "Append",
+                 warnings: [{:row_estimation, :overestimated, 2}]
                }
              ],
              details: nil,
              meta: [timing: 0.231, rows: 4, cost: 50.13],
-             type: "Result"
+             type: "Result",
+             warnings: [{:row_estimation, :overestimated, 2}]
            }
   end
 end
