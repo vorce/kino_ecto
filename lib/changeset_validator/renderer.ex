@@ -11,4 +11,8 @@ defmodule Lively.ChangesetValidator.Renderer do
       Kino.Markdown.new(changeset_result)
     end
   end
+
+  def call(changeset_result) do
+    Kino.Markdown.new(changeset_result)
+  end
 end
