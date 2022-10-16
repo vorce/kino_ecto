@@ -10,6 +10,14 @@ defmodule Lively.QueryBuilder do
     end
   end
 
+  defimpl Kino.Render, for: Lively.QueryBuilder do
+    def to_livebook(query) do
+      query
+      |> Kino.Markdown.new()
+      |> Kino.Render.to_livebook()
+    end
+  end
+
   defmodule MyParser do
     import NimbleParsec
 
@@ -92,12 +100,13 @@ defmodule Lively.QueryBuilder do
   end
 
   defp build_from(from_part) do
-    %Ecto.Query{
+    result = %Ecto.Query{
       from: %Ecto.Query.FromExpr{
-        source: get_source(List.last(from_part)),
-        as: String.to_atom(List.last(from_part))
+        source: get_source(List.last(from_part))
       }
     }
+
+    Ecto.Query.from(result)
   end
 
   defp build_join(query, []), do: query
@@ -108,13 +117,11 @@ defmodule Lively.QueryBuilder do
 
   defp build_where(query, []), do: query
 
-  defp build_where(query, [_where, field_name, comparisson | tail]) do
-    query
-    # |> where_from_parser(query, comparisson, field_name, Enum.join(tail, ","))
-  end
+  defp build_where(query, [_where, field_name, "=" | tail]) do
+    tail = tail |> Enum.join() |> String.replace("'", "")
 
-  defp where_from_parser("=", field_name, value) do
-    value
+    query
+    |> where([t], field(t, ^String.to_atom(field_name)) == ^tail)
   end
 
   defp get_source(table_name) do
