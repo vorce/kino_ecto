@@ -1,4 +1,4 @@
-defmodule Lively.NodeTest do
+defmodule Lively.Explain.NodeTest do
   use ExUnit.Case
 
   alias Lively.Explain.Node

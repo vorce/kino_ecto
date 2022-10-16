@@ -1,4 +1,52 @@
 defmodule Lively.Test.Support.ExplainData do
+  def single_node_plan,
+    do: [
+      %{
+        "Execution Time" => 0.327,
+        "Plan" => %{
+          "Actual Loops" => 1,
+          "Actual Rows" => 8,
+          "Actual Startup Time" => 0.025,
+          "Actual Total Time" => 0.118,
+          "Alias" => "b0",
+          "Local Dirtied Blocks" => 0,
+          "Local Hit Blocks" => 0,
+          "Local Read Blocks" => 0,
+          "Local Written Blocks" => 0,
+          "Node Type" => "Seq Scan",
+          "Output" => ["id", "title", "inserted_at", "updated_at"],
+          "Parallel Aware" => false,
+          "Plan Rows" => 20,
+          "Plan Width" => 3704,
+          "Relation Name" => "books",
+          "Schema" => "public",
+          "Shared Dirtied Blocks" => 0,
+          "Shared Hit Blocks" => 1,
+          "Shared Read Blocks" => 0,
+          "Shared Written Blocks" => 0,
+          "Startup Cost" => 0.0,
+          "Temp Read Blocks" => 0,
+          "Temp Written Blocks" => 0,
+          "Total Cost" => 10.2
+        },
+        "Planning" => %{
+          "Local Dirtied Blocks" => 0,
+          "Local Hit Blocks" => 0,
+          "Local Read Blocks" => 0,
+          "Local Written Blocks" => 0,
+          "Shared Dirtied Blocks" => 0,
+          "Shared Hit Blocks" => 188,
+          "Shared Read Blocks" => 0,
+          "Shared Written Blocks" => 0,
+          "Temp Read Blocks" => 0,
+          "Temp Written Blocks" => 0
+        },
+        "Planning Time" => 2.488,
+        "Settings" => %{},
+        "Triggers" => []
+      }
+    ]
+
   def big_plan,
     do: [
       %{
