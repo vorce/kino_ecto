@@ -175,3 +175,21 @@ Changeset valid? false.
 
 Errors: [age: {"is invalid", [validation: :inclusion, enum: 18..100]}, email: {"has invalid format", [validation: :format]}].
 ```
+
+### Generate Ecto Query from SQL
+
+```elixir
+defmodule TestUser do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "users" do
+    field :name, :string
+    field :age, :integer, default: 0
+    field :email, :string
+  end
+end
+
+
+%Lively.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
+```

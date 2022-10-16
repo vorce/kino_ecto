@@ -2,22 +2,6 @@ defmodule Lively.QueryBuilder do
   defstruct [:sql_query]
   import Ecto.Query
 
-  defmodule Person do
-    use Ecto.Schema
-
-    schema "persons" do
-      field(:name, :string)
-    end
-  end
-
-  defimpl Kino.Render, for: Lively.QueryBuilder do
-    def to_livebook(query) do
-      query
-      |> Kino.Markdown.new()
-      |> Kino.Render.to_livebook()
-    end
-  end
-
   defmodule MyParser do
     import NimbleParsec
 
@@ -84,7 +68,7 @@ defmodule Lively.QueryBuilder do
     [elem(from_part, 1), elem(join_part, 1), elem(where_part, 1)]
   end
 
-  def call(query) do
+  def call(%__MODULE__{sql_query: query}) do
     from_part = MyParser.from_part(query)
     join_part = MyParser.join_part(query)
     where_part = MyParser.where_part(query)
@@ -111,7 +95,7 @@ defmodule Lively.QueryBuilder do
 
   defp build_join(query, []), do: query
 
-  defp build_join(query, [join, table_name, on, field1, equal, field2] = join_part) do
+  defp build_join(query, _join_part) do
     query
   end
 
