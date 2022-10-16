@@ -89,6 +89,7 @@ defmodule Lively.Explain.Renderer do
     end
 
     defp meta_value({:timing, timing_ms}), do: "timing: #{timing_ms}ms"
+    defp meta_value({:cost, %{total: total, node: node}}), do: "cost: #{node}, total: #{total}"
     defp meta_value({key, val}), do: "#{key}: #{val}"
 
     defp warning_value({:row_estimation, under_or_over, val}) do

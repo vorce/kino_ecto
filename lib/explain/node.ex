@@ -4,10 +4,19 @@ defmodule Lively.Explain.Node do
   """
 
   defstruct [
+    # The type of node
     :type,
+
+    # Extra details, to make it easier to understand what this node is for
     :details,
+
+    # Child nodes
     children: [],
+
+    # Metadata about the node's plan, like cost, timing etc.
     meta: [],
+
+    # Heuristics that may be relevant when looking for issues
     warnings: []
   ]
 
@@ -23,19 +32,22 @@ defmodule Lively.Explain.Node do
     plan
     |> Map.get("Plans", [])
     |> Enum.reduce(node, fn child_plan, acc ->
-      %__MODULE__{acc | children: [build_tree(child_plan) | acc.children]}
+      children = [build_tree(child_plan) | acc.children]
+      new_meta = update_node_cost(node, children)
+      %__MODULE__{acc | children: children, meta: new_meta}
     end)
   end
 
   defp node_from_plan(plan) do
     type = Map.get(plan, "Node Type", "Unknown")
+    total_cost = Map.get(plan, "Total Cost")
 
     meta =
       Enum.reject(
         [
           timing: Map.get(plan, "Actual Total Time"),
           rows: Map.get(plan, "Actual Rows"),
-          cost: Map.get(plan, "Total Cost")
+          cost: %{total: total_cost, node: total_cost}
         ],
         fn {_, v} -> is_nil(v) end
       )
@@ -105,4 +117,18 @@ defmodule Lively.Explain.Node do
   end
 
   defp check_warning(_, _), do: nil
+
+  # Calculate the sub cost of a node, by summing the cost of its children.
+  def sub_cost([]), do: 0
+
+  def sub_cost([node | rest]) do
+    Enum.reduce(node.children, 0, fn elem, acc -> acc + elem.meta[:cost].total end) + sub_cost(rest)
+  end
+
+  defp update_node_cost(node, children) do
+    sub_cost = sub_cost(children)
+    node_cost = Float.round(node.meta[:cost].total - sub_cost, 2)
+    cost_map = %{node.meta[:cost] | node: node_cost}
+    Keyword.update(node.meta, :cost, cost_map, fn existing_cost -> Map.put(existing_cost, :node, node_cost) end)
+  end
 end
