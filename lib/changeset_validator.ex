@@ -6,11 +6,5 @@ defmodule Lively.ChangesetValidator do
 
   alias Lively.ChangesetValidator.Renderer
 
-  def call(%__MODULE__{fun: fun, attrs: attrs}) do
-    info = Function.info(fun)
-    module = Keyword.get(info, :module)
-    result = fun.(struct(module), attrs)
-
-    Renderer.call(result)
-  end
+  def call(%__MODULE__{fun: fun, attrs: attrs}), do: Renderer.call(apply(fun, attrs))
 end

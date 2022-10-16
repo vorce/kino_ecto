@@ -4,7 +4,7 @@
 Mix.install(
   [
     {:ecto, "~> 3.8"},
-    {:lively, git: "/Users/filipe/workspace/lively"}
+    {:lively, git: "https://github.com/spawnfest/lively"}
   ],
   force: true
 )
@@ -250,9 +250,32 @@ defmodule User do
     |> validate_required([:name])
     |> validate_inclusion(:age, 18..100)
   end
-end
 
+  def update_address(user, address) do
+    user
+    |> cast(%{address: address}, [:address])
+    |> validate_address()
+  end
+
+  defp validate_address(changeset) do
+    Ecto.Changeset.add_error(changeset, :address, "Bad address", validation: :address_validation)
+  end
+end
+```
+
+```elixir
 %Lively.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 13]}
+```
+
+```elixir
+%Lively.ChangesetValidator{
+  fun: &User.update_address/2,
+  attrs: [%User{name: "Jane Doe"}, "Street"]
+}
+```
+
+```elixir
+%Lively.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 18]}
 ```
 
 ### Generate Ecto Query from SQL
@@ -263,12 +286,11 @@ defmodule TestUser do
   import Ecto.Changeset
 
   schema "users" do
-    field :name, :string
-    field :age, :integer, default: 0
-    field :email, :string
+    field(:name, :string)
+    field(:age, :integer, default: 0)
+    field(:email, :string)
   end
 end
-
 
 %Lively.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
 ```
