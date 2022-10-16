@@ -4,12 +4,25 @@ defmodule Lively.ChangesetValidator.Renderer do
   """
 
   def call(changeset_result) do
-    content = """
-      Changeset valid? #{changeset_result.valid?}.
+    errors =
+      changeset_result.errors
+      |> Enum.map(fn {field, {message, stuff}} ->
+        "`#{field}`: #{message} due to #{Keyword.get(stuff, :validation)} validation"
+      end)
+      |> Enum.map(&"* #{&1}")
+      |> Enum.join("\n")
 
-      Errors: #{inspect(changeset_result.errors)}.
+    content = """
+      **Changeset valid?** #{if changeset_result.valid?, do: "🟢", else: "🔴"}
+      #{unless changeset_result.valid? do
+      """
+      **Errors:**
+      #{errors}
+      """
+    end}
     """
 
+    IO.inspect(content)
     Kino.Markdown.new(content)
   end
 end

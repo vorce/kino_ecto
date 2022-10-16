@@ -1,10 +1,13 @@
 # Lively Demo
 
 ```elixir
-Mix.install([
-  {:ecto, "~> 3.8"},
-  {:lively, git: "https://github.com/spawnfest/lively", force: true}
-])
+Mix.install(
+  [
+    {:ecto, "~> 3.8"},
+    {:lively, git: "/Users/filipe/workspace/lively"}
+  ],
+  force: true
+)
 ```
 
 ## Lively - Ecto utilities for Livebook

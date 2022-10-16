@@ -13,10 +13,7 @@ defmodule Lively do
 
   defimpl Kino.Render, for: ChangesetValidator do
     def to_livebook(changeset_validator) do
-      changeset_result = ChangesetValidator.call(changeset_validator)
-      tabs = Kino.Layout.tabs(Raw: inspect(changeset_validator), "Changeset Validator Result": changeset_result)
-
-      Kino.Render.to_livebook(tabs)
+      changeset_validator |> ChangesetValidator.call() |> Kino.Render.to_livebook()
     end
   end
 end
