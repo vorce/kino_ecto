@@ -32,30 +32,32 @@ defmodule Lively.Explain.Renderer do
       end
     end
 
-    defp node_mermaid_lines(%Node{children: []}, _, acc), do: acc
+    defp node_mermaid_lines(%Node{children: []} = node, id, acc), do: acc <> "\n#{node_style(node, id)}"
 
     defp node_mermaid_lines(
            %Node{children: children} = node,
-           label,
+           id,
            acc
          ) do
       node_value = node_value(node)
+      node_style = node_style(node, id)
 
       lines =
         children
         |> Enum.with_index()
         |> Enum.reduce("", fn {child, index}, node_lines ->
-          child_label = "#{label}#{index}"
+          child_id = "#{id}#{index}"
           child_value = node_value(child)
-          node_lines <> "\t#{label}(#{node_value})-->#{child_label}(#{child_value})\n"
+          node_lines <> "\t#{id}(#{node_value})-->#{child_id}(#{child_value})\n"
         end)
+        |> Kernel.<>("#{node_style}")
 
       lines <>
         (children
          |> Enum.with_index()
          |> Enum.reduce("", fn {child, index}, child_lines ->
-           child_label = "#{label}#{index}"
-           child_lines <> node_mermaid_lines(child, child_label, acc)
+           child_id = "#{id}#{index}"
+           child_lines <> node_mermaid_lines(child, child_id, acc)
          end))
     end
 
@@ -64,7 +66,20 @@ defmodule Lively.Explain.Renderer do
 
       meta_items = Enum.map(node.meta, fn kv -> "<li>#{meta_value(kv)}</li>" end)
       node_meta = if node.meta == [], do: "", else: "<small><ul>#{meta_items}</ul></small>"
-      "#{node.type}#{node_details}#{node_meta}"
+
+      node_warnings =
+        if node.warnings == [], do: "", else: node.warnings |> Enum.map(&warning_value/1) |> Enum.join(" ")
+
+      "#{node.type}#{node_details}#{node_meta}#{node_warnings}"
+    end
+
+    @warning_background_color "#f9d6a7"
+    defp node_style(node, node_id) do
+      if node.warnings == [] do
+        ""
+      else
+        "style #{node_id} fill:#{@warning_background_color};\n"
+      end
     end
 
     defp sanitize(string) do
@@ -75,5 +90,9 @@ defmodule Lively.Explain.Renderer do
 
     defp meta_value({:timing, timing_ms}), do: "timing: #{timing_ms}ms"
     defp meta_value({key, val}), do: "#{key}: #{val}"
+
+    defp warning_value({:row_estimation, under_or_over, val}) do
+      "Rows #{under_or_over} by #{val}x"
+    end
   end
 end

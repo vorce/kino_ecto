@@ -7,7 +7,8 @@ defmodule Lively.Explain.Node do
     :type,
     :details,
     children: [],
-    meta: []
+    meta: [],
+    warnings: []
   ]
 
   @doc """
@@ -42,7 +43,8 @@ defmodule Lively.Explain.Node do
     %__MODULE__{
       type: type,
       details: node_details(type, plan),
-      meta: meta
+      meta: meta,
+      warnings: warnings(plan)
     }
   end
 
@@ -83,4 +85,24 @@ defmodule Lively.Explain.Node do
   end
 
   defp table_alias(_), do: nil
+
+  defp warnings(plan) do
+    [:bad_row_estimation]
+    |> Enum.map(fn type -> check_warning(type, plan) end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp check_warning(:bad_row_estimation, %{"Plan Rows" => plan_rows, "Actual Rows" => actual_rows}) do
+    diff = actual_rows / plan_rows
+
+    cond do
+      actual_rows < 2 -> nil
+      (diff > 1.0 and diff <= 1.1) or (diff < 1.0 and diff >= 0.9) -> nil
+      diff > 1.0 -> {:row_estimation, :underestimated, round(diff)}
+      diff < 1.0 -> {:row_estimation, :overestimated, round(plan_rows / actual_rows)}
+      true -> nil
+    end
+  end
+
+  defp check_warning(_, _), do: nil
 end
