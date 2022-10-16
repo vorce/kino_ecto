@@ -82,7 +82,7 @@ Lively is a collection of utilities for working with Ecto and Livebook.
 Existing components:
 
 * `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
-* `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now)
+* `Lively.Explain`: Visualize the query plan for an `Ecto.Query` (only Postgres support for now). See [guides/explain.livemd] for examples.
 * `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset`
 * ...
 
