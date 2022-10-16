@@ -1,9 +1,6 @@
 defmodule Lively.EntityRelationship.Renderer do
-  alias Lively.EntityRelationship.Introspect
-
-  def call(struct) do
-    struct
-    |> Introspect.call()
+  def call(content) do
+    content
     |> Enum.reduce([], &mermaid/2)
     |> Enum.uniq()
     |> Enum.join("\n")

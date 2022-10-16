@@ -4,16 +4,16 @@ defmodule Lively do
   defdelegate explain(repo, operation, queryable, opts \\ []), to: Lively.Explain, as: :call
 
   defimpl Kino.Render, for: EntityRelationship do
-    def to_livebook(%{schema: %{__meta__: %Ecto.Schema.Metadata{}} = module}) do
+    def to_livebook(struct) do
+      er = EntityRelationship.call(struct)
+
       tabs =
         Kino.Layout.tabs(
-          Raw: Kino.Inspect.new(module),
-          "Entity Relationship Diagram": EntityRelationship.call(module)
+          Raw: Kino.Inspect.new(struct.schema),
+          "Entity Relationship Diagram": er
         )
 
       Kino.Render.to_livebook(tabs)
     end
-
-    def to_livebook(module), do: Kino.Render.to_livebook(module)
   end
 end

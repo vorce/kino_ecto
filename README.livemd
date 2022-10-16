@@ -15,7 +15,9 @@ Mix.install([
 :ok
 ```
 
-## Section
+## Lively - Ecto utilities for Livebook
+
+### Entity Relantionship Diagram from Schemas
 
 ```elixir
 defmodule Organization do
@@ -47,6 +49,16 @@ defmodule Person do
     belongs_to(:organization, Organization)
   end
 end
+```
 
-%Lively{schema: Organization}
+<!-- livebook:{"output":true} -->
+
+```
+{:module, Person, <<70, 79, 82, 49, 0, 0, 19, ...>>,
+ [__schema__: 1, __schema__: 1, __schema__: 1, __schema__: 1, __schema__: 2, __schema__: 2, ...]}
+```
+
+```elixir
+alias Lively.EntityRelationship
+%EntityRelationship{}
 ```
