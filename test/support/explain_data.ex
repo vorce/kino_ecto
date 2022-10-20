@@ -1,4 +1,17 @@
 defmodule Lively.Test.Support.ExplainData do
+  defmodule FakeAdapter do
+    @behaviour Ecto.Adapter
+
+    defmacro __before_compile__(_), do: unquote(:foo)
+    def checked_out?(_, _), do: false
+    def ensure_all_started(_, _), do: {:ok, :foo}
+    def init(_), do: {:ok, %{}, %{}}
+    def checkout(_, _, _), do: :foo
+    def checked_out?(_), do: false
+    def dumpers(_, _), do: [:integer]
+    def loaders(_, _), do: [:integer]
+  end
+
   def single_node_plan,
     do: [
       %{

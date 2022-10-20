@@ -6,26 +6,32 @@ defmodule Lively.Explain do
 
   defstruct [:plan, :execution_time, :planning_time, :raw]
 
-  @postgres_opts [
-    analyze: true,
-    verbose: true,
-    costs: true,
-    settings: true,
-    buffers: true,
-    timing: true,
-    summary: true,
-    format: :map
-  ]
+  @adapter_opts %{
+    Ecto.Adapters.Postgres => [
+      analyze: true,
+      verbose: true,
+      costs: true,
+      settings: true,
+      buffers: true,
+      timing: true,
+      summary: true,
+      format: :map
+    ]
+  }
 
   @doc """
   Creates a `Lively.Explain` struct that can be rendered based on a queryable.
   """
   def call(repo, operation, queryable, opts \\ []) do
-    opts = Keyword.merge(opts, @postgres_opts)
+    adapter = repo.__adapter__()
 
-    repo
-    |> Ecto.Adapters.SQL.explain(operation, queryable, opts)
-    |> new()
+    with {:ok, adapter_opts} <- adapter_opts(adapter) do
+      opts = Keyword.merge(opts, adapter_opts)
+
+      repo
+      |> Ecto.Adapters.SQL.explain(operation, queryable, opts)
+      |> new()
+    end
   end
 
   def new(explain_result) when is_list(explain_result) do
@@ -37,5 +43,12 @@ defmodule Lively.Explain do
       plan: Node.build_tree(top_plan["Plan"]),
       raw: explain_result
     }
+  end
+
+  defp adapter_opts(adapter) do
+    case Map.fetch(@adapter_opts, adapter) do
+      {:ok, _} = opts -> opts
+      :error -> {:error, {:unsupported_adapter, adapter}}
+    end
   end
 end
