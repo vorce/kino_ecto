@@ -1,9 +1,9 @@
-defmodule Lively.Explain.RendererTest do
+defmodule KinoEcto.Explain.RendererTest do
   use ExUnit.Case
 
-  alias Lively.Explain
-  alias Lively.Explain.Renderer
-  alias Lively.Test.Support.ExplainData
+  alias KinoEcto.Explain
+  alias KinoEcto.Explain.Renderer
+  alias KinoEcto.Test.Support.ExplainData
 
   test "build_mermaid_graph/1" do
     explain = Explain.new(ExplainData.single_node_plan())

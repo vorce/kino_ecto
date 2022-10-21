@@ -1,16 +1,16 @@
-# Lively.Explain Demo
+# KinoEcto.Explain Demo
 
 ```elixir
 Mix.install([
   {:ecto, "~> 3.8"},
-  {:lively, git: "https://github.com/spawnfest/lively"}
+  {:kino_ecto, git: "https://github.com/vorce/kino_ecto"}
 ])
 ```
 
 ## Explain
 
 ```elixir
-# Can also do: `Lively.Explain.call(MyApp.Repo, :all, my_ecto_query)` to visualize the explain for a specific query.
+# Can also do: `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)` to visualize the explain for a specific query.
 
 plan = [
   %{
@@ -162,5 +162,5 @@ plan = [
 ]
 
 
-Lively.Explain.new(plan)
+KinoEcto.Explain.new(plan)
 ```

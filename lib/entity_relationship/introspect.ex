@@ -1,4 +1,4 @@
-defmodule Lively.EntityRelationship.Introspect do
+defmodule KinoEcto.EntityRelationship.Introspect do
   def call(struct, acc \\ [])
   def call(%atom{} = struct, acc) when is_struct(struct), do: call(atom, acc)
   def call(struct, acc), do: introspect_fields(struct, assocs(struct), acc)

@@ -1,8 +1,8 @@
-defmodule Lively.EntityRelationshipTest do
+defmodule KinoEcto.EntityRelationshipTest do
   use ExUnit.Case
-  doctest Lively.EntityRelationship
+  doctest KinoEcto.EntityRelationship
 
-  alias Lively.EntityRelationship
+  alias KinoEcto.EntityRelationship
 
   defmodule TestTeam do
     use Ecto.Schema
@@ -13,14 +13,7 @@ defmodule Lively.EntityRelationshipTest do
   end
 
   test "render schema" do
-    assert {
-             :tabs,
-             [
-               text: _,
-               markdown: md
-             ],
-             %{labels: ["Raw", "Entity Relationship Diagram"]}
-           } = Kino.Render.to_livebook(%EntityRelationship{schema: TestTeam})
+    assert {:markdown, md} = Kino.Render.to_livebook(%EntityRelationship{schema: TestTeam})
 
     assert md =~ "mermaid"
     assert md =~ "string name"

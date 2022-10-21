@@ -1,6 +1,6 @@
-defmodule Lively.QueryBuilder.Renderer do
+defmodule KinoEcto.QueryBuilder.Renderer do
   @moduledoc """
-  Kino renderer for `Lively.QueryBuilder` structs
+  Kino renderer for `KinoEcto.QueryBuilder` structs
   """
 
   def call(query_result) do

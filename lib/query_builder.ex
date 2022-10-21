@@ -1,7 +1,7 @@
-defmodule Lively.QueryBuilder do
+defmodule KinoEcto.QueryBuilder do
   defstruct [:sql_query]
   import Ecto.Query
-  alias Lively.QueryBuilder.Renderer
+  alias KinoEcto.QueryBuilder.Renderer
 
   defmodule MyParser do
     import NimbleParsec
@@ -111,7 +111,7 @@ defmodule Lively.QueryBuilder do
   end
 
   defp get_source(table_name) do
-    {:ok, modules} = :application.get_key(:lively, :modules)
+    {:ok, modules} = :application.get_key(:kino_ecto, :modules)
 
     modules
     |> Enum.filter(&({:__schema__, 1} in &1.__info__(:functions)))
@@ -119,7 +119,7 @@ defmodule Lively.QueryBuilder do
     |> then(fn schema -> {table_name, schema} end)
   end
 
-  # defimpl Ecto.Queryable, for: Lively.QueryBuilder do
+  # defimpl Ecto.Queryable, for: KinoEcto.QueryBuilder do
   #   def to_query(query_builder) do
   #     [fields | tail] =
   #       query_builder.sql_query
@@ -150,7 +150,7 @@ defmodule Lively.QueryBuilder do
   #   end
 
   #   defp get_source(table_name) do
-  #     {:ok, modules} = :application.get_key(:lively, :modules)
+  #     {:ok, modules} = :application.get_key(:kino_ecto, :modules)
 
   #     modules
   #     |> Enum.filter(&({:__schema__, 1} in &1.__info__(:functions)))

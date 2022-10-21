@@ -1,4 +1,4 @@
-defmodule LivelyTest do
+defmodule KinoEctoTest do
   use ExUnit.Case
-  doctest Lively
+  doctest KinoEcto
 end

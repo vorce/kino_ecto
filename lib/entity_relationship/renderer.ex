@@ -1,4 +1,4 @@
-defmodule Lively.EntityRelationship.Renderer do
+defmodule KinoEcto.EntityRelationship.Renderer do
   def call(content) do
     content
     |> Enum.reduce([], &mermaid/2)

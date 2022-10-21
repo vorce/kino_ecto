@@ -1,9 +1,9 @@
-defmodule Lively.QueryBuilderTest do
+defmodule KinoEcto.QueryBuilderTest do
   use ExUnit.Case
 
   import Ecto.Query
 
-  alias Lively.QueryBuilder
+  alias KinoEcto.QueryBuilder
 
   test "parses simple query" do
     query = "SELECT * FROM persons WHERE name = 'John'"

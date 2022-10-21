@@ -1,8 +1,8 @@
-defmodule Lively.EntityRelationship do
+defmodule KinoEcto.EntityRelationship do
   defstruct [:schema]
 
-  alias Lively.EntityRelationship.Introspect
-  alias Lively.EntityRelationship.Renderer
+  alias KinoEcto.EntityRelationship.Introspect
+  alias KinoEcto.EntityRelationship.Renderer
 
   def call(%__MODULE__{schema: module}) do
     module

@@ -1,34 +1,34 @@
-# Lively Demo
+# KinoEcto Demo
 
 ```elixir
 Mix.install(
   [
     {:ecto, "~> 3.8"},
-    {:lively, git: "https://github.com/spawnfest/lively"}
+    {:kino_ecto, git: "https://github.com/vorce/kino_ecto"}
   ],
   force: true
 )
 ```
 
-## Lively - Ecto utilities for Livebook
+## KinoEcto - Ecto utilities for Livebook
 
 For a better experience, see this Readme using [Livebook](https://livebook.dev/)
 
-Lively is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
+KinoEcto is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
 
 Existing components:
 
-* `Lively.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
-* `Lively.Explain`: Visualize the query plan for an `Ecto.Query`.
-* `Lively.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes.
+* `KinoEcto.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
+* `KinoEcto.Explain`: Visualize the query plan for an `Ecto.Query`.
+* `KinoEcto.ChangesetValidator`: Visualize an `Ecto.Changeset` by passing a changeset function and its attributes.
   The next step here would be having a SmartCell rendered for changing attributes and a better looking result of changeset evaluation.
-* `Lively.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params.
+* `KinoEcto.QueryBuilder`: Build and return an Ecto.Query from the SQL query passed in the params.
 
 **Note:** All the code is WIP and should be seen as such
 
 ## Entity Relationship Diagram
 
-Using the `%Lively.EntityRelantionship{schema: Module}` you will be able to visualize a Entity Relationship Diagram and connected entities based on your Ecto.Schema.
+Using the `%KinoEcto.EntityRelantionship{schema: Module}` you will be able to visualize a Entity Relationship Diagram and connected entities based on your Ecto.Schema.
 
 ### Example:
 
@@ -63,14 +63,14 @@ defmodule Person do
   end
 end
 
-%Lively.EntityRelationship{schema: Person}
+%KinoEcto.EntityRelationship{schema: Person}
 ```
 
 ## Explain
 
-With a given plan, you can draw a graph to better visualize the result of your query analysis using `Lively.Explain.new(plan)`.
+With a given plan, you can draw a graph to better visualize the result of your query analysis using `KinoEcto.Explain.new(plan)`.
 
-You can also use `Lively.Explain.call(MyApp.Repo, :all, my_ecto_query)` so it's easier to run the plan and output the graph in one go.
+You can also use `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)` so it's easier to run the plan and output the graph in one go.
 
 **Note:** Only Postgres is supported at the moment
 
@@ -226,7 +226,7 @@ plan = [
   }
 ]
 
-Lively.Explain.new(plan)
+KinoEcto.Explain.new(plan)
 ```
 
 ## Changeset Validator
@@ -268,18 +268,18 @@ end
 ```
 
 ```elixir
-%Lively.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 13]}
+%KinoEcto.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 13]}
 ```
 
 ```elixir
-%Lively.ChangesetValidator{
+%KinoEcto.ChangesetValidator{
   fun: &User.update_address/2,
   attrs: [%User{name: "Jane Doe"}, "Street"]
 }
 ```
 
 ```elixir
-%Lively.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 18]}
+%KinoEcto.ChangesetValidator{fun: &User.new_user_changeset/2, attrs: ["John Doe", 18]}
 ```
 
 ### Generate Ecto Query from SQL
@@ -291,7 +291,7 @@ If a developer is more accustomed to SQL and not Ecto.Query, this tool can guide
 ### Example
 
 ```elixir
-%Lively.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
+%KinoEcto.QueryBuilder{sql_query: "SELECT * FROM users WHERE name = 'John'"}
 ```
 
 ## Future Work
@@ -304,4 +304,4 @@ For now, we're checking what we can do with Ecto since it's a common library but
 * Oban tools
 * Ecto migration tracker (what and when was a given schema changed)
 
-This can be just the beginning of Lively.
+This can be just the beginning of KinoEcto.

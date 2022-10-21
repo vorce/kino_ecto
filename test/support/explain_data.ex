@@ -1,4 +1,4 @@
-defmodule Lively.Test.Support.ExplainData do
+defmodule KinoEcto.Test.Support.ExplainData do
   defmodule FakeAdapter do
     @behaviour Ecto.Adapter
 

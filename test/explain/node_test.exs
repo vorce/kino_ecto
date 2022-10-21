@@ -1,8 +1,8 @@
-defmodule Lively.Explain.NodeTest do
+defmodule KinoEcto.Explain.NodeTest do
   use ExUnit.Case
 
-  alias Lively.Explain.Node
-  alias Lively.Test.Support.ExplainData
+  alias KinoEcto.Explain.Node
+  alias KinoEcto.Test.Support.ExplainData
 
   test "build_tree/1" do
     plan = List.first(ExplainData.big_plan())["Plan"]

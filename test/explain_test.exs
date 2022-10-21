@@ -1,8 +1,8 @@
-defmodule Lively.ExplainTest do
+defmodule KinoEcto.ExplainTest do
   use ExUnit.Case
 
-  alias Lively.Explain
-  alias Lively.Test.Support.ExplainData
+  alias KinoEcto.Explain
+  alias KinoEcto.Test.Support.ExplainData
 
   test "render two tabs" do
     explain = Explain.new(ExplainData.big_plan())

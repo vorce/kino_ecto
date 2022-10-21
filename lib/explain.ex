@@ -1,8 +1,8 @@
-defmodule Lively.Explain do
+defmodule KinoEcto.Explain do
   @moduledoc """
   Parse and render query explain results
   """
-  alias Lively.Explain.Node
+  alias KinoEcto.Explain.Node
 
   defstruct [:plan, :execution_time, :planning_time, :raw]
 
@@ -20,7 +20,7 @@ defmodule Lively.Explain do
   }
 
   @doc """
-  Creates a `Lively.Explain` struct that can be rendered based on a queryable.
+  Creates a `KinoEcto.Explain` struct that can be rendered based on a queryable.
   """
   def call(repo, operation, queryable, opts \\ []) do
     adapter = repo.__adapter__()

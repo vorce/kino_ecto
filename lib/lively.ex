@@ -1,8 +1,8 @@
-defmodule Lively do
-  alias Lively.ChangesetValidator
-  alias Lively.EntityRelationship
-  alias Lively.Explain
-  alias Lively.QueryBuilder
+defmodule KinoEcto do
+  alias KinoEcto.ChangesetValidator
+  alias KinoEcto.EntityRelationship
+  alias KinoEcto.Explain
+  alias KinoEcto.QueryBuilder
 
   defdelegate explain(repo, operation, queryable, opts \\ []), to: Explain, as: :call
 

@@ -1,6 +1,6 @@
-defmodule Lively.ChangesetValidator.Renderer do
+defmodule KinoEcto.ChangesetValidator.Renderer do
   @moduledoc """
-  Kino renderer for `Lively.ChangesetValidator` structs
+  Kino renderer for `KinoEcto.ChangesetValidator` structs
   """
 
   def call(changeset_result) do

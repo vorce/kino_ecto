@@ -1,10 +1,10 @@
-defmodule Lively.Explain.Renderer do
+defmodule KinoEcto.Explain.Renderer do
   @moduledoc """
-  Kino renderer for `Lively.Explain` structs
+  Kino renderer for `KinoEcto.Explain` structs
 
   Draws a graph of the query plan, inspired by: https://explain.dalibo.com/
   """
-  alias Lively.Explain.Node
+  alias KinoEcto.Explain.Node
 
   def build_mermaid_graph(explain) do
     lines = node_mermaid_lines(explain.plan, "T", "")
@@ -85,11 +85,11 @@ defmodule Lively.Explain.Renderer do
     "Rows #{under_or_over} by #{val}x"
   end
 
-  defimpl Kino.Render, for: Lively.Explain do
+  defimpl Kino.Render, for: KinoEcto.Explain do
     def to_livebook(explain) do
       plan =
         explain
-        |> Lively.Explain.Renderer.build_mermaid_graph()
+        |> KinoEcto.Explain.Renderer.build_mermaid_graph()
         |> Kino.Mermaid.new()
 
       if is_nil(explain.raw) do
