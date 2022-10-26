@@ -1,4 +1,10 @@
-# KinoEcto Demo
+# KinoEcto - Ecto utilities for Livebook
+
+For a better experience, see this Readme using [Livebook](https://livebook.dev/).
+
+KinoEcto is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
+
+KinoEcto started as a hackathon project called [Lively for Spawnfest 2022](https://github.com/spawnfest/lively).
 
 ```elixir
 Mix.install(
@@ -10,13 +16,7 @@ Mix.install(
 )
 ```
 
-## KinoEcto - Ecto utilities for Livebook
-
-For a better experience, see this Readme using [Livebook](https://livebook.dev/)
-
-KinoEcto is a collection of utilities for working with Ecto and Livebook to help developers learn more about Ecto but also as a way to augment project documentation for better onboarding, knowledge sharing, expectation setting, etc.
-
-Existing components:
+## Existing components
 
 * `KinoEcto.EntityRelationship`: Visualize your `Ecto.Schema` as an ER diagram
 * `KinoEcto.Explain`: Visualize the query plan for an `Ecto.Query`.
