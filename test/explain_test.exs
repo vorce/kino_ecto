@@ -1,23 +1,8 @@
 defmodule KinoEcto.ExplainTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias KinoEcto.Explain
   alias KinoEcto.Test.Support.ExplainData
-
-  test "render two tabs" do
-    explain = Explain.new(ExplainData.big_plan())
-
-    assert {:tabs, [{:js, %{export: %{info_string: "mermaid"}}}, {:text, _}], %{labels: ["Plan", "Raw"]}} =
-             Kino.Render.to_livebook(explain)
-  end
-
-  test "contains original plan" do
-    plan = ExplainData.big_plan()
-
-    explain = Explain.new(plan)
-
-    assert explain.raw == plan
-  end
 
   test "return error on unsupported adapter" do
     defmodule TestRepo do

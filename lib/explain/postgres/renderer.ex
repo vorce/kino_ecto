@@ -1,10 +1,10 @@
-defmodule KinoEcto.Explain.Renderer do
+defmodule KinoEcto.Explain.Postgres.Renderer do
   @moduledoc """
-  Kino renderer for `KinoEcto.Explain` structs
+  Kino renderer for `KinoEcto.Explain.Postgres` structs
 
   Draws a graph of the query plan, inspired by: https://explain.dalibo.com/
   """
-  alias KinoEcto.Explain.Node
+  alias KinoEcto.Explain.Postgres.Node
 
   def build_mermaid_graph(explain) do
     lines = node_mermaid_lines(explain.plan, "T", "")
@@ -85,11 +85,11 @@ defmodule KinoEcto.Explain.Renderer do
     "Rows #{under_or_over} by #{val}x"
   end
 
-  defimpl Kino.Render, for: KinoEcto.Explain do
+  defimpl Kino.Render, for: KinoEcto.Explain.Postgres do
     def to_livebook(explain) do
       plan =
         explain
-        |> KinoEcto.Explain.Renderer.build_mermaid_graph()
+        |> KinoEcto.Explain.Postgres.Renderer.build_mermaid_graph()
         |> Kino.Mermaid.new()
 
       if is_nil(explain.raw) do

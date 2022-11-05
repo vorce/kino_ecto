@@ -12,6 +12,7 @@ Mix.install([
 ```elixir
 # Can also do: `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)` to visualize the explain for a specific query.
 
+# postgres example plan
 plan = [
   %{
     "Plan" => %{
@@ -162,5 +163,5 @@ plan = [
 ]
 
 
-KinoEcto.Explain.new(plan)
+KinoEcto.Explain.Postgres.new(plan)
 ```

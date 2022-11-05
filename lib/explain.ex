@@ -6,48 +6,28 @@ defmodule KinoEcto.Explain do
 
   defstruct [:plan, :execution_time, :planning_time, :raw]
 
-  @adapter_opts %{
-    Ecto.Adapters.Postgres => [
-      analyze: true,
-      verbose: true,
-      costs: true,
-      settings: true,
-      buffers: true,
-      timing: true,
-      summary: true,
-      format: :map
-    ]
+  @adapter_explain %{
+    Ecto.Adapters.Postgres => KinoEcto.Explain.Postgres
   }
 
   @doc """
-  Creates a `KinoEcto.Explain` struct that can be rendered based on a queryable.
+  Creates a struct that can be rendered based on a queryable.
   """
   def call(repo, operation, queryable, opts \\ []) do
     adapter = repo.__adapter__()
 
-    with {:ok, adapter_opts} <- adapter_opts(adapter) do
-      opts = Keyword.merge(opts, adapter_opts)
+    with {:ok, explain_module} <- explain_module(adapter) do
+      opts = Keyword.merge(opts, explain_module.options())
 
       repo
       |> Ecto.Adapters.SQL.explain(operation, queryable, opts)
-      |> new()
+      |> explain_module.new()
     end
   end
 
-  def new(explain_result) when is_list(explain_result) do
-    top_plan = List.first(explain_result)
-
-    %__MODULE__{
-      execution_time: top_plan["Execution Time"],
-      planning_time: top_plan["Planning Time"],
-      plan: Node.build_tree(top_plan["Plan"]),
-      raw: explain_result
-    }
-  end
-
-  defp adapter_opts(adapter) do
-    case Map.fetch(@adapter_opts, adapter) do
-      {:ok, _} = opts -> opts
+  defp explain_module(adapter) do
+    case Map.fetch(@adapter_explain, adapter) do
+      {:ok, _} = module -> {:ok, module}
       :error -> {:error, {:unsupported_adapter, adapter}}
     end
   end
