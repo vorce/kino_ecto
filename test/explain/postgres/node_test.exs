@@ -1,7 +1,7 @@
-defmodule KinoEcto.Explain.NodeTest do
-  use ExUnit.Case
+defmodule KinoEcto.Explain.Postgres.NodeTest do
+  use ExUnit.Case, async: true
 
-  alias KinoEcto.Explain.Node
+  alias KinoEcto.Explain.Postgres.Node
   alias KinoEcto.Test.Support.ExplainData
 
   test "build_tree/1" do

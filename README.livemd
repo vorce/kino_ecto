@@ -68,11 +68,11 @@ end
 
 ## Explain
 
-With a given plan, you can draw a graph to better visualize the result of your query analysis using `KinoEcto.Explain.new(plan)`.
+To run explain on a query and output the graph in one go you can use `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)`.
 
-You can also use `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)` so it's easier to run the plan and output the graph in one go.
+If you already have a plan you can use it to draw a graph directly with: `KinoEcto.Explain.Postgres.new(plan)`.
 
-**Note:** Only Postgres is supported at the moment
+**Note:** Only Postgres is supported at the moment ([myxql support issue](issues/2))
 
 ### Example
 
@@ -226,7 +226,7 @@ plan = [
   }
 ]
 
-KinoEcto.Explain.new(plan)
+KinoEcto.Explain.Postgres.new(plan)
 ```
 
 ## Changeset Validator

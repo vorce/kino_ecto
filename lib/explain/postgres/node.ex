@@ -1,6 +1,6 @@
-defmodule KinoEcto.Explain.Node do
+defmodule KinoEcto.Explain.Postgres.Node do
   @moduledoc """
-  Internal representation of a query plan node
+  Internal representation of a postgres query plan node
   """
 
   defstruct [
@@ -21,7 +21,7 @@ defmodule KinoEcto.Explain.Node do
   ]
 
   @doc """
-  Build a tree of `KinoEcto.Explain.Node` structs based on a (postgres map format) query plan
+  Build a tree of `KinoEcto.Explain.Postgres.Node` structs based on a postgres map format query plan
   from `Ecto.Adapters.SQL.explain/4`
   """
   def build_tree(nil), do: nil
