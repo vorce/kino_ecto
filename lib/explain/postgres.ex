@@ -20,7 +20,7 @@ defmodule KinoEcto.Explain.Postgres do
   ]
 
   @impl true
-  defp options(), do: options
+  def options(), do: @options
 
   @impl true
   def new(explain_result) when is_list(explain_result) do
