@@ -68,9 +68,9 @@ end
 
 ## Explain
 
-To run explain on a query and output the graph in one go you use `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)`.
+To run explain on a query and output the graph in one go you can use `KinoEcto.Explain.call(MyApp.Repo, :all, my_ecto_query)`.
 
-If you already have a plan you can use it to draw a graph with: `KinoEcto.Explain.Postgres.new(plan)`.
+If you already have a plan you can use it to draw a graph directly with: `KinoEcto.Explain.Postgres.new(plan)`.
 
 **Note:** Only Postgres is supported at the moment ([myxql support issue](issues/2))
 
