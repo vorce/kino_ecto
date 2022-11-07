@@ -27,7 +27,7 @@ defmodule KinoEcto.Explain do
 
   defp explain_module(adapter) do
     case Map.fetch(@adapter_explain, adapter) do
-      {:ok, _} = module -> {:ok, module}
+      {:ok, module} -> {:ok, module}
       :error -> {:error, {:unsupported_adapter, adapter}}
     end
   end
