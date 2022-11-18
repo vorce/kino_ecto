@@ -15,17 +15,19 @@ permissions:
 
 jobs:
   test:
-    services:
-      db:
-        image: postgres:12
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # Leaving this here since we'll probably need some db services
+    # for integration tests at some point.
+    # services:
+    #   db:
+    #     image: postgres:12
+    #     ports: ["5432:5432"]
+    #     env:
+    #       POSTGRES_PASSWORD: postgres
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     runs-on: ubuntu-latest
     name: Test on OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
