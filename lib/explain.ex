@@ -2,8 +2,6 @@ defmodule KinoEcto.Explain do
   @moduledoc """
   Parse and render query explain results
   """
-  alias KinoEcto.Explain.Node
-
   defstruct [:plan, :execution_time, :planning_time, :raw]
 
   @adapter_explain %{
