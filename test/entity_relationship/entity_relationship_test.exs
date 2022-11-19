@@ -16,6 +16,7 @@ defmodule KinoEcto.EntityRelationshipTest do
     assert {:markdown, md} = Kino.Render.to_livebook(%EntityRelationship{schema: TestTeam})
 
     assert md =~ "mermaid"
-    assert md =~ "string name"
+    assert md =~ "class `KinoEcto.EntityRelationshipTest.TestTeam`"
+    assert md =~ "`KinoEcto.EntityRelationshipTest.TestTeam` : string name"
   end
 end
