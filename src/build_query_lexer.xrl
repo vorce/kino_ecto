@@ -32,9 +32,11 @@ sum   : {token, {aggregate, TokenLine, sum}}.
 \] : {token, {']', TokenLine}}.
 
 %% arithmetic operators
-\. : {token, {'.', TokenLine}}.
+\. : {token, {dot, TokenLine}}.
+\, : skip_token.
 
 %% Reserver keywords
+as           : {token, {as, TokenLine}}.
 and          : {token, {boolean_mult, TokenLine}}.
 or           : {token, {boolean_add, TokenLine}}.
 not          : {token, {boolean_negate, TokenLine}}.
