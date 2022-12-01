@@ -2,8 +2,6 @@ defmodule KinoEcto.Explain do
   @moduledoc """
   Parse and render query explain results
   """
-  alias KinoEcto.Explain.Node
-
   defstruct [:plan, :execution_time, :planning_time, :raw]
 
   @adapter_explain %{
@@ -27,7 +25,7 @@ defmodule KinoEcto.Explain do
 
   defp explain_module(adapter) do
     case Map.fetch(@adapter_explain, adapter) do
-      {:ok, _} = module -> {:ok, module}
+      {:ok, module} -> {:ok, module}
       :error -> {:error, {:unsupported_adapter, adapter}}
     end
   end

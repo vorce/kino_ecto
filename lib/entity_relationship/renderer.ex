@@ -9,8 +9,8 @@ defmodule KinoEcto.EntityRelationship.Renderer do
   end
 
   defp mermaid({struct, field, type}, acc) do
-    class_def = "class #{struct}"
-    type_def = "#{struct} : #{type} #{field}"
+    class_def = "class `#{struct}`"
+    type_def = "`#{struct}` : #{type} #{field}"
     acc ++ [class_def] ++ [type_def]
   end
 
@@ -25,8 +25,8 @@ defmodule KinoEcto.EntityRelationship.Renderer do
       end
 
     class_def = Enum.flat_map(fields, &mermaid(&1, []))
-    relationship_def = fields |> Enum.map(&elem(&1, 0)) |> Enum.map(&"#{struct} #{relantionship} #{&1}")
-    type_def = "#{struct} : #{type} #{field}"
+    relationship_def = fields |> Enum.map(&elem(&1, 0)) |> Enum.map(&"`#{struct}` #{relantionship} #{&1}")
+    type_def = "`#{struct}` : #{type} #{field}"
     acc ++ class_def ++ relationship_def ++ [type_def]
   end
 

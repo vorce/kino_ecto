@@ -1,3 +1,5 @@
+![build](https://github.com/vorce/kino_ecto/actions/workflows/elixir.yaml/badge.svg)
+
 # KinoEcto - Ecto utilities for Livebook
 
 For a better experience, see this Readme using [Livebook](https://livebook.dev/).
