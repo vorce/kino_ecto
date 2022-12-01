@@ -33,7 +33,8 @@ sum   : {token, {aggregate, TokenLine, sum}}.
 
 %% arithmetic operators
 \. : {token, {dot, TokenLine}}.
-\, : skip_token.
+\, : {token, {comma, TokenLine}}.
+\* : {token, {all, TokenLine}}.
 
 %% Reserver keywords
 as           : {token, {as, TokenLine}}.
