@@ -1,15 +1,18 @@
 Nonterminals select_stmt select_opts select_expr_list select_expr table_references table_reference 
     table_factor opt_where expr opt_as_alias.
 Terminals identifier select from where operator number as quoted boolean_mult boolean_add 
-    left_paren right_paren fieldname grouping dot.
+left_paren right_paren fieldname grouping dot comma distinct all all_fields.
 Rootsymbol select_stmt.
 
 select_stmt -> select select_opts select_expr_list : {select, '$2', '$3'}.
 select_stmt -> select select_opts select_expr_list from table_references opt_where : {select, '$2', '$3', '$5', '$6'}.
 
-select_opts -> expr : '$1'.
+select_opts -> '$empty' : nil.
+select_opts -> distinct : {select_opts, '$1'}.
 select_expr_list -> '$empty' : nil.
-select_expr_list -> select_expr : '$1'.
+select_expr_list -> select_expr : {fields, '$1'}.
+select_expr -> select_expr comma select_expr : {'$1', '$3'}.
+select_expr -> all: {extract_token('$1')}.
 select_expr -> expr : '$1'.
 
 table_references -> table_reference : {from, '$1'}.
@@ -37,5 +40,3 @@ Erlang code.
 
 extract_value({_Token, _Line, Value}) -> Value.
 extract_token({Token, _Line}) -> Token.
-remove_line({Token, _Line, Value}) -> {Token, Value}.
-remove_quotes({_Token, _Line, Value}) -> list_to_binary(sub_string(Value, 2, len(Value)-1)).
