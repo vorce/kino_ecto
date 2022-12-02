@@ -51,6 +51,7 @@ join         : {token, {join, TokenLine}}.
 inner\sjoin  : {token, {join, TokenLine}}.
 left\sjoin   : {token, {left_join, TokenLine}}.
 right\sjoin  : {token, {right_join, TokenLine}}.
+on           : {token, {on, TokenLine}}.
 
 %% Identifiers
 {IDENTIFIER}  : {token, {identifier, TokenLine, TokenChars}}.

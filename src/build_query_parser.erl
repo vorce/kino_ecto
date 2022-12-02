@@ -1,6 +1,6 @@
 -module(build_query_parser).
 -export([parse/1, parse_and_scan/1, format_error/1]).
--file("src/build_query_parser.yrl", 37).
+-file("src/build_query_parser.yrl", 43).
 
 -import(string,[len/1, sub_string/3]). 
 
@@ -252,16 +252,30 @@ yeccpars2(25=S, Cat, Ss, Stack, T, Ts, Tzr) ->
 %%  yeccpars2_29(S, Cat, Ss, Stack, T, Ts, Tzr);
 %% yeccpars2(30=S, Cat, Ss, Stack, T, Ts, Tzr) ->
 %%  yeccpars2_30(S, Cat, Ss, Stack, T, Ts, Tzr);
-yeccpars2(31=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%% yeccpars2(31=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_31(S, Cat, Ss, Stack, T, Ts, Tzr);
+yeccpars2(32=S, Cat, Ss, Stack, T, Ts, Tzr) ->
  yeccpars2_10(S, Cat, Ss, Stack, T, Ts, Tzr);
-%% yeccpars2(32=S, Cat, Ss, Stack, T, Ts, Tzr) ->
-%%  yeccpars2_32(S, Cat, Ss, Stack, T, Ts, Tzr);
 %% yeccpars2(33=S, Cat, Ss, Stack, T, Ts, Tzr) ->
 %%  yeccpars2_33(S, Cat, Ss, Stack, T, Ts, Tzr);
 yeccpars2(34=S, Cat, Ss, Stack, T, Ts, Tzr) ->
  yeccpars2_10(S, Cat, Ss, Stack, T, Ts, Tzr);
 %% yeccpars2(35=S, Cat, Ss, Stack, T, Ts, Tzr) ->
 %%  yeccpars2_35(S, Cat, Ss, Stack, T, Ts, Tzr);
+%% yeccpars2(36=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_36(S, Cat, Ss, Stack, T, Ts, Tzr);
+%% yeccpars2(37=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_37(S, Cat, Ss, Stack, T, Ts, Tzr);
+yeccpars2(38=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_10(S, Cat, Ss, Stack, T, Ts, Tzr);
+%% yeccpars2(39=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_39(S, Cat, Ss, Stack, T, Ts, Tzr);
+%% yeccpars2(40=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_40(S, Cat, Ss, Stack, T, Ts, Tzr);
+yeccpars2(41=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_10(S, Cat, Ss, Stack, T, Ts, Tzr);
+%% yeccpars2(42=S, Cat, Ss, Stack, T, Ts, Tzr) ->
+%%  yeccpars2_42(S, Cat, Ss, Stack, T, Ts, Tzr);
 yeccpars2(Other, _, _, _, _, _, _) ->
  erlang:error({yecc_bug,"1.4",{missing_state_in_action_table, Other}}).
 
@@ -475,13 +489,15 @@ yeccpars2_24(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
 -dialyzer({nowarn_function, yeccpars2_26/7}).
 -compile({nowarn_unused_function,  yeccpars2_26/7}).
 yeccpars2_26(S, 'where', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 34, Ss, Stack, T, Ts, Tzr);
+ yeccpars1(S, 41, Ss, Stack, T, Ts, Tzr);
 yeccpars2_26(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  NewStack = yeccpars2_26_(Stack),
- yeccpars2_33(_S, Cat, [26 | Ss], NewStack, T, Ts, Tzr).
+ yeccpars2_40(_S, Cat, [26 | Ss], NewStack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccpars2_27/7}).
 -compile({nowarn_unused_function,  yeccpars2_27/7}).
+yeccpars2_27(S, 'join', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 34, Ss, Stack, T, Ts, Tzr);
 yeccpars2_27(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  NewStack = yeccpars2_27_(Stack),
  yeccgoto_table_references(hd(Ss), Cat, Ss, NewStack, T, Ts, Tzr).
@@ -494,60 +510,103 @@ yeccpars2_28(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
 
 -dialyzer({nowarn_function, yeccpars2_29/7}).
 -compile({nowarn_unused_function,  yeccpars2_29/7}).
-yeccpars2_29(S, 'as', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 31, Ss, Stack, T, Ts, Tzr);
-yeccpars2_29(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
-yeccpars2_29(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
-yeccpars2_29(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
 yeccpars2_29(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  NewStack = yeccpars2_29_(Stack),
- yeccpars2_30(_S, Cat, [29 | Ss], NewStack, T, Ts, Tzr).
+ yeccgoto_table_reference(hd(Ss), Cat, Ss, NewStack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccpars2_30/7}).
 -compile({nowarn_unused_function,  yeccpars2_30/7}).
+yeccpars2_30(S, 'as', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 32, Ss, Stack, T, Ts, Tzr);
+yeccpars2_30(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
+yeccpars2_30(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
+yeccpars2_30(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
 yeccpars2_30(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- [_|Nss] = Ss,
  NewStack = yeccpars2_30_(Stack),
+ yeccpars2_31(_S, Cat, [30 | Ss], NewStack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccpars2_31/7}).
+-compile({nowarn_unused_function,  yeccpars2_31/7}).
+yeccpars2_31(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ [_|Nss] = Ss,
+ NewStack = yeccpars2_31_(Stack),
  yeccgoto_table_factor(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
 
-%% yeccpars2_31: see yeccpars2_10
-
--dialyzer({nowarn_function, yeccpars2_32/7}).
--compile({nowarn_unused_function,  yeccpars2_32/7}).
-yeccpars2_32(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
-yeccpars2_32(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
-yeccpars2_32(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
- yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
-yeccpars2_32(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- [_|Nss] = Ss,
- NewStack = yeccpars2_32_(Stack),
- yeccgoto_opt_as_alias(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
+%% yeccpars2_32: see yeccpars2_10
 
 -dialyzer({nowarn_function, yeccpars2_33/7}).
 -compile({nowarn_unused_function,  yeccpars2_33/7}).
+yeccpars2_33(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
+yeccpars2_33(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
+yeccpars2_33(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
 yeccpars2_33(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- [_,_,_,_,_|Nss] = Ss,
+ [_|Nss] = Ss,
  NewStack = yeccpars2_33_(Stack),
- yeccgoto_select_stmt(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
+ yeccgoto_opt_as_alias(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
 
 %% yeccpars2_34: see yeccpars2_10
 
 -dialyzer({nowarn_function, yeccpars2_35/7}).
 -compile({nowarn_unused_function,  yeccpars2_35/7}).
-yeccpars2_35(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
+yeccpars2_35(S, 'on', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 38, Ss, Stack, T, Ts, Tzr);
+yeccpars2_35(_, _, _, _, T, _, _) ->
+ yeccerror(T).
+
+-dialyzer({nowarn_function, yeccpars2_36/7}).
+-compile({nowarn_unused_function,  yeccpars2_36/7}).
+yeccpars2_36(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ [_,_,_|Nss] = Ss,
+ NewStack = yeccpars2_36_(Stack),
+ yeccgoto_join_table(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccpars2_37/7}).
+-compile({nowarn_unused_function,  yeccpars2_37/7}).
+yeccpars2_37(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ NewStack = yeccpars2_37_(Stack),
+ yeccgoto_opt_join_condition(hd(Ss), Cat, Ss, NewStack, T, Ts, Tzr).
+
+%% yeccpars2_38: see yeccpars2_10
+
+-dialyzer({nowarn_function, yeccpars2_39/7}).
+-compile({nowarn_unused_function,  yeccpars2_39/7}).
+yeccpars2_39(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
  yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
-yeccpars2_35(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
+yeccpars2_39(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
  yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
-yeccpars2_35(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
+yeccpars2_39(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
  yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
-yeccpars2_35(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+yeccpars2_39(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
  [_|Nss] = Ss,
- NewStack = yeccpars2_35_(Stack),
+ NewStack = yeccpars2_39_(Stack),
+ yeccgoto_join_condition(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccpars2_40/7}).
+-compile({nowarn_unused_function,  yeccpars2_40/7}).
+yeccpars2_40(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ [_,_,_,_,_|Nss] = Ss,
+ NewStack = yeccpars2_40_(Stack),
+ yeccgoto_select_stmt(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
+
+%% yeccpars2_41: see yeccpars2_10
+
+-dialyzer({nowarn_function, yeccpars2_42/7}).
+-compile({nowarn_unused_function,  yeccpars2_42/7}).
+yeccpars2_42(S, 'boolean_add', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 14, Ss, Stack, T, Ts, Tzr);
+yeccpars2_42(S, 'boolean_mult', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 15, Ss, Stack, T, Ts, Tzr);
+yeccpars2_42(S, 'operator', Ss, Stack, T, Ts, Tzr) ->
+ yeccpars1(S, 16, Ss, Stack, T, Ts, Tzr);
+yeccpars2_42(_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ [_|Nss] = Ss,
+ NewStack = yeccpars2_42_(Stack),
  yeccgoto_opt_where(hd(Nss), Cat, Nss, NewStack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_expr/7}).
@@ -565,21 +624,40 @@ yeccgoto_expr(16, Cat, Ss, Stack, T, Ts, Tzr) ->
 yeccgoto_expr(23, Cat, Ss, Stack, T, Ts, Tzr) ->
  yeccpars2_7(7, Cat, Ss, Stack, T, Ts, Tzr);
 yeccgoto_expr(25, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_29(29, Cat, Ss, Stack, T, Ts, Tzr);
-yeccgoto_expr(31, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_32(32, Cat, Ss, Stack, T, Ts, Tzr);
+ yeccpars2_30(30, Cat, Ss, Stack, T, Ts, Tzr);
+yeccgoto_expr(32, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_33(33, Cat, Ss, Stack, T, Ts, Tzr);
 yeccgoto_expr(34, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_35(35, Cat, Ss, Stack, T, Ts, Tzr).
+ yeccpars2_30(30, Cat, Ss, Stack, T, Ts, Tzr);
+yeccgoto_expr(38, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_39(39, Cat, Ss, Stack, T, Ts, Tzr);
+yeccgoto_expr(41, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_42(42, Cat, Ss, Stack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccgoto_join_condition/7}).
+-compile({nowarn_unused_function,  yeccgoto_join_condition/7}).
+yeccgoto_join_condition(35=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_37(_S, Cat, Ss, Stack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccgoto_join_table/7}).
+-compile({nowarn_unused_function,  yeccgoto_join_table/7}).
+yeccgoto_join_table(25=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_29(_S, Cat, Ss, Stack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_opt_as_alias/7}).
 -compile({nowarn_unused_function,  yeccgoto_opt_as_alias/7}).
-yeccgoto_opt_as_alias(29=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_30(_S, Cat, Ss, Stack, T, Ts, Tzr).
+yeccgoto_opt_as_alias(30=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_31(_S, Cat, Ss, Stack, T, Ts, Tzr).
+
+-dialyzer({nowarn_function, yeccgoto_opt_join_condition/7}).
+-compile({nowarn_unused_function,  yeccgoto_opt_join_condition/7}).
+yeccgoto_opt_join_condition(35=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_36(_S, Cat, Ss, Stack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_opt_where/7}).
 -compile({nowarn_unused_function,  yeccgoto_opt_where/7}).
 yeccgoto_opt_where(26=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_33(_S, Cat, Ss, Stack, T, Ts, Tzr).
+ yeccpars2_40(_S, Cat, Ss, Stack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_select_expr/7}).
 -compile({nowarn_unused_function,  yeccgoto_select_expr/7}).
@@ -606,12 +684,14 @@ yeccgoto_select_stmt(0, Cat, Ss, Stack, T, Ts, Tzr) ->
 -dialyzer({nowarn_function, yeccgoto_table_factor/7}).
 -compile({nowarn_unused_function,  yeccgoto_table_factor/7}).
 yeccgoto_table_factor(25=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_28(_S, Cat, Ss, Stack, T, Ts, Tzr).
+ yeccpars2_28(_S, Cat, Ss, Stack, T, Ts, Tzr);
+yeccgoto_table_factor(34, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_35(35, Cat, Ss, Stack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_table_reference/7}).
 -compile({nowarn_unused_function,  yeccgoto_table_reference/7}).
-yeccgoto_table_reference(25=_S, Cat, Ss, Stack, T, Ts, Tzr) ->
- yeccpars2_27(_S, Cat, Ss, Stack, T, Ts, Tzr).
+yeccgoto_table_reference(25, Cat, Ss, Stack, T, Ts, Tzr) ->
+ yeccpars2_27(27, Cat, Ss, Stack, T, Ts, Tzr).
 
 -dialyzer({nowarn_function, yeccgoto_table_references/7}).
 -compile({nowarn_unused_function,  yeccgoto_table_references/7}).
@@ -689,7 +769,7 @@ yeccpars2_8_(__Stack0) ->
 -compile({inline,yeccpars2_9_/1}).
 -dialyzer({nowarn_function, yeccpars2_9_/1}).
 -compile({nowarn_unused_function,  yeccpars2_9_/1}).
--file("src/build_query_parser.yrl", 30).
+-file("src/build_query_parser.yrl", 36).
 yeccpars2_9_(__Stack0) ->
  [___1 | __Stack] = __Stack0,
  [begin
@@ -699,7 +779,7 @@ yeccpars2_9_(__Stack0) ->
 -compile({inline,yeccpars2_11_/1}).
 -dialyzer({nowarn_function, yeccpars2_11_/1}).
 -compile({nowarn_unused_function,  yeccpars2_11_/1}).
--file("src/build_query_parser.yrl", 31).
+-file("src/build_query_parser.yrl", 37).
 yeccpars2_11_(__Stack0) ->
  [___1 | __Stack] = __Stack0,
  [begin
@@ -709,7 +789,7 @@ yeccpars2_11_(__Stack0) ->
 -compile({inline,yeccpars2_12_/1}).
 -dialyzer({nowarn_function, yeccpars2_12_/1}).
 -compile({nowarn_unused_function,  yeccpars2_12_/1}).
--file("src/build_query_parser.yrl", 29).
+-file("src/build_query_parser.yrl", 35).
 yeccpars2_12_(__Stack0) ->
  [___1 | __Stack] = __Stack0,
  [begin
@@ -719,7 +799,7 @@ yeccpars2_12_(__Stack0) ->
 -compile({inline,yeccpars2_17_/1}).
 -dialyzer({nowarn_function, yeccpars2_17_/1}).
 -compile({nowarn_unused_function,  yeccpars2_17_/1}).
--file("src/build_query_parser.yrl", 24).
+-file("src/build_query_parser.yrl", 30).
 yeccpars2_17_(__Stack0) ->
  [___3,___2,___1 | __Stack] = __Stack0,
  [begin
@@ -729,7 +809,7 @@ yeccpars2_17_(__Stack0) ->
 -compile({inline,yeccpars2_18_/1}).
 -dialyzer({nowarn_function, yeccpars2_18_/1}).
 -compile({nowarn_unused_function,  yeccpars2_18_/1}).
--file("src/build_query_parser.yrl", 27).
+-file("src/build_query_parser.yrl", 33).
 yeccpars2_18_(__Stack0) ->
  [___3,___2,___1 | __Stack] = __Stack0,
  [begin
@@ -739,7 +819,7 @@ yeccpars2_18_(__Stack0) ->
 -compile({inline,yeccpars2_19_/1}).
 -dialyzer({nowarn_function, yeccpars2_19_/1}).
 -compile({nowarn_unused_function,  yeccpars2_19_/1}).
--file("src/build_query_parser.yrl", 25).
+-file("src/build_query_parser.yrl", 31).
 yeccpars2_19_(__Stack0) ->
  [___3,___2,___1 | __Stack] = __Stack0,
  [begin
@@ -749,7 +829,7 @@ yeccpars2_19_(__Stack0) ->
 -compile({inline,yeccpars2_20_/1}).
 -dialyzer({nowarn_function, yeccpars2_20_/1}).
 -compile({nowarn_unused_function,  yeccpars2_20_/1}).
--file("src/build_query_parser.yrl", 26).
+-file("src/build_query_parser.yrl", 32).
 yeccpars2_20_(__Stack0) ->
  [___3,___2,___1 | __Stack] = __Stack0,
  [begin
@@ -759,7 +839,7 @@ yeccpars2_20_(__Stack0) ->
 -compile({inline,yeccpars2_22_/1}).
 -dialyzer({nowarn_function, yeccpars2_22_/1}).
 -compile({nowarn_unused_function,  yeccpars2_22_/1}).
--file("src/build_query_parser.yrl", 28).
+-file("src/build_query_parser.yrl", 34).
 yeccpars2_22_(__Stack0) ->
  [___3,___2,___1 | __Stack] = __Stack0,
  [begin
@@ -779,7 +859,7 @@ yeccpars2_24_(__Stack0) ->
 -compile({inline,yeccpars2_26_/1}).
 -dialyzer({nowarn_function, yeccpars2_26_/1}).
 -compile({nowarn_unused_function,  yeccpars2_26_/1}).
--file("src/build_query_parser.yrl", 18).
+-file("src/build_query_parser.yrl", 24).
 yeccpars2_26_(__Stack0) ->
  [begin
                         nil
@@ -808,51 +888,91 @@ yeccpars2_28_(__Stack0) ->
 -compile({inline,yeccpars2_29_/1}).
 -dialyzer({nowarn_function, yeccpars2_29_/1}).
 -compile({nowarn_unused_function,  yeccpars2_29_/1}).
--file("src/build_query_parser.yrl", 21).
+-file("src/build_query_parser.yrl", 16).
 yeccpars2_29_(__Stack0) ->
+ [___1 | __Stack] = __Stack0,
  [begin
-                           nil
-  end | __Stack0].
+                                ___1
+  end | __Stack].
 
 -compile({inline,yeccpars2_30_/1}).
 -dialyzer({nowarn_function, yeccpars2_30_/1}).
 -compile({nowarn_unused_function,  yeccpars2_30_/1}).
--file("src/build_query_parser.yrl", 16).
+-file("src/build_query_parser.yrl", 27).
 yeccpars2_30_(__Stack0) ->
+ [begin
+                           nil
+  end | __Stack0].
+
+-compile({inline,yeccpars2_31_/1}).
+-dialyzer({nowarn_function, yeccpars2_31_/1}).
+-compile({nowarn_unused_function,  yeccpars2_31_/1}).
+-file("src/build_query_parser.yrl", 22).
+yeccpars2_31_(__Stack0) ->
  [___2,___1 | __Stack] = __Stack0,
  [begin
                                    {___1, ___2}
   end | __Stack].
 
--compile({inline,yeccpars2_32_/1}).
--dialyzer({nowarn_function, yeccpars2_32_/1}).
--compile({nowarn_unused_function,  yeccpars2_32_/1}).
--file("src/build_query_parser.yrl", 22).
-yeccpars2_32_(__Stack0) ->
+-compile({inline,yeccpars2_33_/1}).
+-dialyzer({nowarn_function, yeccpars2_33_/1}).
+-compile({nowarn_unused_function,  yeccpars2_33_/1}).
+-file("src/build_query_parser.yrl", 28).
+yeccpars2_33_(__Stack0) ->
  [___2,___1 | __Stack] = __Stack0,
  [begin
                           {alias, ___2}
   end | __Stack].
 
--compile({inline,yeccpars2_33_/1}).
--dialyzer({nowarn_function, yeccpars2_33_/1}).
--compile({nowarn_unused_function,  yeccpars2_33_/1}).
+-compile({inline,yeccpars2_36_/1}).
+-dialyzer({nowarn_function, yeccpars2_36_/1}).
+-compile({nowarn_unused_function,  yeccpars2_36_/1}).
+-file("src/build_query_parser.yrl", 18).
+yeccpars2_36_(__Stack0) ->
+ [___4,___3,___2,___1 | __Stack] = __Stack0,
+ [begin
+                                                                     {join, ___1, ___3, ___4}
+  end | __Stack].
+
+-compile({inline,yeccpars2_37_/1}).
+-dialyzer({nowarn_function, yeccpars2_37_/1}).
+-compile({nowarn_unused_function,  yeccpars2_37_/1}).
+-file("src/build_query_parser.yrl", 19).
+yeccpars2_37_(__Stack0) ->
+ [___1 | __Stack] = __Stack0,
+ [begin
+                                       ___1
+  end | __Stack].
+
+-compile({inline,yeccpars2_39_/1}).
+-dialyzer({nowarn_function, yeccpars2_39_/1}).
+-compile({nowarn_unused_function,  yeccpars2_39_/1}).
+-file("src/build_query_parser.yrl", 20).
+yeccpars2_39_(__Stack0) ->
+ [___2,___1 | __Stack] = __Stack0,
+ [begin
+                            {on, ___2}
+  end | __Stack].
+
+-compile({inline,yeccpars2_40_/1}).
+-dialyzer({nowarn_function, yeccpars2_40_/1}).
+-compile({nowarn_unused_function,  yeccpars2_40_/1}).
 -file("src/build_query_parser.yrl", 4).
-yeccpars2_33_(__Stack0) ->
+yeccpars2_40_(__Stack0) ->
  [___6,___5,___4,___3,___2,___1 | __Stack] = __Stack0,
  [begin
                                                                                      {select, ___2, ___3, ___5, ___6}
   end | __Stack].
 
--compile({inline,yeccpars2_35_/1}).
--dialyzer({nowarn_function, yeccpars2_35_/1}).
--compile({nowarn_unused_function,  yeccpars2_35_/1}).
--file("src/build_query_parser.yrl", 19).
-yeccpars2_35_(__Stack0) ->
+-compile({inline,yeccpars2_42_/1}).
+-dialyzer({nowarn_function, yeccpars2_42_/1}).
+-compile({nowarn_unused_function,  yeccpars2_42_/1}).
+-file("src/build_query_parser.yrl", 25).
+yeccpars2_42_(__Stack0) ->
  [___2,___1 | __Stack] = __Stack0,
  [begin
                           {where, ___2}
   end | __Stack].
 
 
--file("src/build_query_parser.yrl", 43).
+-file("src/build_query_parser.yrl", 49).

@@ -3,17 +3,6 @@ defmodule KinoEcto.QueryBuilder do
   import Ecto.Query
   alias KinoEcto.QueryBuilder.Renderer
 
-  defmodule Customer do
-    use Ecto.Schema
-
-    import Ecto.Query
-
-    schema "customers" do
-      field(:name, :string)
-      field(:age, :string)
-    end
-  end
-
   # def call(%__MODULE__{sql_query: query}) do
   #   query = String.downcase(query)
   #   {:ok, tokens, _} = :build_query_lexer.string(query)
@@ -53,6 +42,8 @@ defmodule KinoEcto.QueryBuilder do
   defp cleanup(ast), do: ast
 
   defp build_query(ast) do
+    dbg()
+
     ast
     |> Enum.reduce(%Ecto.Query{}, fn item, acc ->
       acc = do_build_query(item, acc)
@@ -61,6 +52,8 @@ defmodule KinoEcto.QueryBuilder do
   end
 
   defp do_build_query(:select, query), do: query
+
+  defp do_build_query([:fields, [:all]], query), do: query
 
   defp do_build_query([:fields, fields], query) do
     flatten_fields = List.flatten(fields) |> Enum.map(&String.to_atom/1)
