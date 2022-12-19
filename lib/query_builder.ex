@@ -15,7 +15,7 @@ defmodule KinoEcto.QueryBuilder do
     join_choice = choice([string("JOIN"), string("join")])
     on_choice = choice([string("ON"), string("on")])
     where_choice = choice([string("WHERE"), string("where")])
-    comparisson_choice = choice([string("="), string(">="), string("<="), string("<>")])
+    comparison_choice = choice([string("="), string(">="), string("<="), string("<>")])
 
     from_part =
       select_choice
@@ -50,7 +50,7 @@ defmodule KinoEcto.QueryBuilder do
       |> ignore(whitespace)
       |> ascii_string(@alphanumeric, min: 1)
       |> ignore(whitespace)
-      |> optional(comparisson_choice)
+      |> optional(comparison_choice)
       |> ignore(whitespace)
       |> optional(ascii_string(@string_prefix, min: 0, max: 1))
       |> ascii_string(@alphanumeric, min: 1)
