@@ -5,11 +5,13 @@ defmodule KinoEcto.Explain.Postgres.RendererTest do
   alias KinoEcto.Explain.Postgres.Renderer
   alias KinoEcto.Test.Support.ExplainData
 
-  test "build_mermaid_graph/1" do
-    explain = Postgres.new(ExplainData.single_node_plan())
+  describe "build_graph/1" do
+    test "big_plan" do
+      explain = Postgres.new(ExplainData.big_plan())
 
-    result = Renderer.build_mermaid_graph(explain)
+      result = Renderer.build_graph(explain)
 
-    assert result =~ "Seq Scan"
+      assert result =~ "Seq Scan"
+    end
   end
 end

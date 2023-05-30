@@ -110,8 +110,8 @@ defmodule KinoEcto.Explain.Postgres.Node do
     cond do
       actual_rows < 2 -> nil
       (diff > 1.0 and diff <= 1.1) or (diff < 1.0 and diff >= 0.9) -> nil
-      diff > 1.0 -> {:row_estimation, :underestimated, round(diff)}
-      diff < 1.0 -> {:row_estimation, :overestimated, round(plan_rows / actual_rows)}
+      diff > 1.0 -> {:row_estimation, "underestimated", round(diff)}
+      diff < 1.0 -> {:row_estimation, "overestimated", round(plan_rows / actual_rows)}
       true -> nil
     end
   end
