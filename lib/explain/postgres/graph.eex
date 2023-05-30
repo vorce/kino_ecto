@@ -1,0 +1,10 @@
+graph TB
+subgraph Total
+TimeE[Execution time: #<%= @execution_time %>ms]
+TimeP[Planning time: #<%= @planning_time %>ms]
+end
+
+<%= @nodes %>
+
+<%= @lines %>
+classDef default text-align: left;

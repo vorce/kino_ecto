@@ -26,8 +26,8 @@ defmodule KinoEcto.MixProject do
   defp deps do
     [
       {:kino, "~> 0.7.0"},
-      {:ecto, "~> 3.8"},
-      {:ecto_sql, "~> 3.8"},
+      {:ecto, "~> 3.10"},
+      {:ecto_sql, "~> 3.10"},
       {:nimble_parsec, "~> 1.2"}
     ]
   end

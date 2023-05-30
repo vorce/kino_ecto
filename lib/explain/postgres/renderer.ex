@@ -1,95 +1,110 @@
 defmodule KinoEcto.Explain.Postgres.Renderer do
+  require EEx
+
   @moduledoc """
   Kino renderer for `KinoEcto.Explain.Postgres` structs
 
   Draws a graph of the query plan, inspired by: https://explain.dalibo.com/
   """
+
+  EEx.function_from_file(:def, :graph, "lib/explain/postgres/graph.eex", [:assigns], trim: true)
+
   alias KinoEcto.Explain.Postgres.Node
 
-  def build_mermaid_graph(explain) do
-    lines = node_mermaid_lines(explain.plan, "T", "")
+  def build_graph(explain) do
+    {nodes, lines} = build_mermaid_graph(explain.plan, "T", {[], []})
 
-    """
-    graph TB
-    subgraph Total
-    TimeE[Execution time: #{explain.execution_time}ms]
-    TimeP[Planning time: #{explain.planning_time}ms]
-    end
-
-    #{lines}
-    classDef default text-align: left;
-    """
+    graph(
+      nodes: nodes,
+      lines: lines,
+      execution_time: explain.execution_time,
+      planning_time: explain.planning_time
+    )
   end
 
-  defp node_mermaid_lines(%Node{children: []} = node, id, acc),
-    do: acc <> "\n#{id}(#{node_value(node)})\n#{node_style(node, id)}"
+  defp build_mermaid_graph(%Node{children: []}, _id, {nodes, lines}), do: {nodes, lines}
 
-  defp node_mermaid_lines(
-         %Node{children: children} = node,
-         id,
-         acc
-       ) do
-    node_value = node_value(node)
-    node_style = node_style(node, id)
+  defp build_mermaid_graph(%Node{children: children} = node, id, {all_nodes, all_lines}) do
+    reduce =
+      if id == "T" do
+        {[node_entry(node, id), node_style(node, id)], []}
+      else
+        {[], []}
+      end
 
-    lines =
+    {nodes, lines} =
       children
       |> Enum.with_index()
-      |> Enum.reduce("", fn {child, index}, node_lines ->
-        child_id = "#{id}#{index}"
-        child_value = node_value(child)
-        node_lines <> "\t#{id}(#{node_value})-->#{child_id}(#{child_value})\n"
-      end)
-      |> Kernel.<>("#{node_style}")
+      |> Enum.reverse()
+      |> Enum.reduce(reduce, fn {child, index}, {nodes, lines} ->
+        child_id = "#{id}-#{index}"
 
-    lines <>
-      (children
-       |> Enum.with_index()
-       |> Enum.reduce("", fn {child, index}, child_lines ->
-         child_id = "#{id}#{index}"
-         child_lines <> node_mermaid_lines(child, child_id, acc)
-       end))
+        build_mermaid_graph(
+          child,
+          child_id,
+          {[node_entry(child, child_id), node_style(child, child_id) | nodes], [line(id, child_id) | lines]}
+        )
+      end)
+
+    {[nodes | all_nodes], [lines | all_lines]}
+  end
+
+  defp line(id, child_id) do
+    [id, " --> ", child_id, "\n"]
+  end
+
+  defp node_entry(node, id) do
+    [id, "(", node_value(node), ")\n"]
   end
 
   defp node_value(%Node{} = node) do
-    node_details = if is_nil(node.details), do: "", else: "<br><span>#{sanitize(node.details)}</span>"
+    [
+      node.type,
+      node_details(node),
+      node_meta(node),
+      node_warnings(node)
+    ]
+  end
 
-    meta_items = Enum.map(node.meta, fn kv -> "<li>#{meta_value(kv)}</li>" end)
-    node_meta = if node.meta == [], do: "", else: "<small><ul>#{meta_items}</ul></small>"
+  defp node_details(%{details: nil}), do: []
+  defp node_details(%{details: details}), do: ["<br><span>", sanitize(details), "</span>"]
+  defp node_meta(%{meta: []}), do: []
 
-    node_warnings = if node.warnings == [], do: "", else: node.warnings |> Enum.map(&warning_value/1) |> Enum.join(" ")
+  defp node_meta(%{meta: meta}) do
+    meta = for meta_item <- meta, do: ["<li>", meta_value(meta_item), "</li>"]
+    ["<small><ul>", meta, "</ul></small>"]
+  end
 
-    "#{node.type}#{node_details}#{node_meta}#{node_warnings}"
+  defp node_warnings(%{warnings: []}), do: []
+
+  defp node_warnings(%{warnings: warnings}) do
+    warnings |> Enum.map(&warning_value/1) |> Enum.intersperse(" ")
   end
 
   @warning_background_color "#f9d6a7"
-  defp node_style(node, node_id) do
-    if node.warnings == [] do
-      ""
-    else
-      "style #{node_id} fill:#{@warning_background_color};\n"
-    end
+  defp node_style(%{warnings: []}, _node_id), do: []
+
+  defp node_style(%{warnings: _warnings}, node_id) do
+    ["style ", to_string(node_id), " fill:", @warning_background_color, ";\n"]
   end
 
   defp sanitize(string) do
-    string
-    |> String.replace("(", "")
-    |> String.replace(")", "")
+    String.replace(string, ["(", ")", "\"", "[", "]"], "")
   end
 
-  defp meta_value({:timing, timing_ms}), do: "timing: #{timing_ms}ms"
-  defp meta_value({:cost, %{total: total, node: node}}), do: "cost: #{node}, total: #{total}"
-  defp meta_value({key, val}), do: "#{key}: #{val}"
+  defp meta_value({:timing, timing_ms}), do: ["timing: ", to_string(timing_ms), "ms"]
+  defp meta_value({:cost, %{total: total, node: node}}), do: ["cost: ", to_string(node), ", total: ", to_string(total)]
+  defp meta_value({key, val}), do: [to_string(key), ": ", to_string(val)]
 
   defp warning_value({:row_estimation, under_or_over, val}) do
-    "Rows #{under_or_over} by #{val}x"
+    ["Rows ", under_or_over, " by ", to_string(val), "x"]
   end
 
   defimpl Kino.Render, for: KinoEcto.Explain.Postgres do
     def to_livebook(explain) do
       plan =
         explain
-        |> KinoEcto.Explain.Postgres.Renderer.build_mermaid_graph()
+        |> KinoEcto.Explain.Postgres.Renderer.build_graph()
         |> Kino.Mermaid.new()
 
       if is_nil(explain.raw) do
